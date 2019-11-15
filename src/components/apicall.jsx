@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import dice from "../img/film.svg";
 import filter from "../img/filter.svg";
 import Title from "./title";
+import Scorebar from "./scorebar";
+import Overview from "./overview";
+import MovieInfo from "./movieinfo";
 
 class ApiCall extends Component {
   state = {
@@ -15,13 +18,11 @@ class ApiCall extends Component {
     fetch(
       "https://api.themoviedb.org/3/movie/27205?api_key=" +
         process.env.REACT_APP_MOVIE_API_KEY +
-        "&external_id=27205"
+        "&append_to_response=release_dates"
     )
       .then(res => res.json())
       .then(
         result => {
-          //console.log(result.backdrop_path);
-
           this.setState({
             isLoaded: true,
             movie: result,
@@ -39,10 +40,8 @@ class ApiCall extends Component {
   }
 
   render() {
-    //console.log(this.state);
+    console.log(this.state);
 
-    //console.log(background);
-    //<img className="background-img" src={this.state.background} alt="" />
     const mystyle = {
       backgroundImage: "url(" + this.state.background + ")"
     };
@@ -61,26 +60,38 @@ class ApiCall extends Component {
           </button>
         </div>
         <div className="background" style={mystyle}></div>
+        {this.renderInfo()}
+      </div>
+    );
+  }
+
+  renderInfo = () => {
+    if (this.state.isLoaded === true) {
+      return (
         <div className="content">
           <div className="grid">
-            <div className="video-grid">viddeo grid</div>
+            <div className="video-grid"></div>
             <div className="info-grid">
               <div className="info-content">
                 <Title
                   title={this.state.movie.original_title}
                   genre={this.state.movie.genres}
                 />
+                <Scorebar score={this.state.movie.vote_average} />
+                <Overview overview={this.state.movie.overview} />
+                <MovieInfo
+                  rating={this.state.movie.release_dates}
+                  language={this.state.movie.original_language}
+                  runtime={this.state.movie.runtime}
+                  release={this.state.movie.release_date}
+                />
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
+  };
 }
-
-/*
-            background:
-              "https://image.tmdb.org/t/p/original" + result.backdrop_path*/
 
 export default ApiCall;

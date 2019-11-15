@@ -1,21 +1,33 @@
 body {
   margin: 0;
   background-color: #2c2b34;
+  font-family: "Titillium Web", sans-serif;
 }
 
 @import url("https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700&display=swap");
+
+p,
+h1,
+h2,
+h3 {
+  padding: 0;
+  margin: 0;
+}
 
 :root {
   --background-dark: #2c2b34;
   --background-medium: #363540;
   --background-light: #3d3c47;
-  --primary: #83d5e6;
-  --secondary: #6a94a4;
+  --primary: #e256a5;
+  --secondary: #6565c4;
   --text-dark: #293441;
+  --text-medium-dark: #929292;
   --text-medium: #a7a7a7;
   --text-light: #c2c2c2;
   --text-white: #fff;
 }
+
+/* NAVBAR */
 
 .navbar {
   width: 100%;
@@ -74,6 +86,7 @@ h1 {
   font-size: 1.2em;
 }
 
+/* PAGE WRAPPER AND BACKGROUND */
 .content {
   width: 100vw;
   height: calc(100vh - 80px);
@@ -103,6 +116,83 @@ h1 {
   align-items: center;
 }
 
+/* INFO SECTION */
+
 .info-content {
   align-items: center;
+}
+
+.genres {
+  color: var(--secondary);
+}
+
+.movie-title {
+  color: var(--text-white);
+  text-transform: uppercase;
+  font-size: 4em;
+}
+
+.title {
+  font-size: 0.9em;
+  color: var(--text-medium-dark);
+}
+
+/* SCORE BAR */
+
+.bar-container {
+  position: relative;
+}
+
+.bar-dark {
+  position: absolute;
+  top: 0px;
+
+  width: 40vw;
+  height: 25px;
+  background-color: rgba(68, 81, 85, 0.4);
+  opacity: 0.8;
+  border-radius: 100px;
+}
+
+.bar-light {
+  position: absolute;
+  top: 0px;
+  background-image: linear-gradient(to right, var(--secondary), #e256a5);
+  opacity: 1;
+  border-radius: 100px;
+}
+
+.score {
+  float: right;
+  margin-right: 10px;
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+/* OVERVIEW TEXT */
+
+.overview {
+  width: 40vw;
+  padding-top: 50px;
+}
+
+.overview-text {
+  color: var(--text-medium);
+  font-size: 1.1em;
+}
+
+/* MOVIE INFO */
+
+.movie-info-container {
+  padding-top: 20px;
+}
+.movie-info {
+  display: inline-block;
+  margin-right: 4vw;
+}
+
+.info-text {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 1.8em;
 }
