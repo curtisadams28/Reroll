@@ -4,7 +4,7 @@ class Scorebar extends Component {
   render() {
     return (
       <div>
-        <p className="title">Review Score</p>
+        <p className="title review-score">Review Score</p>
         <div className="bar-container">
           <div className="bar-dark"></div>
           <div
@@ -19,8 +19,8 @@ class Scorebar extends Component {
   }
   calculateBarWidth = () => {
     const score = this.props.score / 10;
-    const barlength = score * 40;
-    const request = "width: " + barlength + "vw";
+    const barlength = score * 50;
+
     return barlength;
   };
 }

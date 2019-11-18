@@ -7,6 +7,11 @@ import Overview from "./overview";
 import MovieInfo from "./movieinfo";
 
 class ApiCall extends Component {
+  constructor(props) {
+    super(props);
+    this.infoLength = React.createRef();
+  }
+
   state = {
     error: null,
     isLoaded: false,
@@ -37,10 +42,14 @@ class ApiCall extends Component {
           });
         }
       );
+
+    //console.log(this.infoLength);
+
+    console.log(this.movie);
   }
 
   render() {
-    console.log(this.state);
+    //console.log(this.state);
 
     const mystyle = {
       backgroundImage: "url(" + this.state.background + ")"
@@ -70,9 +79,8 @@ class ApiCall extends Component {
       return (
         <div className="content">
           <div className="grid">
-            <div className="video-grid"></div>
             <div className="info-grid">
-              <div className="info-content">
+              <div ref={this.infoLength} className="info-content">
                 <Title
                   title={this.state.movie.original_title}
                   genre={this.state.movie.genres}

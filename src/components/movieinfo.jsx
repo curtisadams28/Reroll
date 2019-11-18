@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import ISO6391 from "iso-639-1";
-import { thisExpression } from "@babel/types";
 
 class MovieInfo extends Component {
   render() {
     return (
       <div className="movie-info-container">
-        <div className="movie-info rating">
+        <div className="rating">
           <p className="title">Rating (US)</p>
-          <p className="info-text">{this.getRating()}</p>
+          <p className="info-text rating-text">{this.getRating()}</p>
         </div>
         <div className="movie-info language">
           <p className="title">Main Language</p>
@@ -51,6 +50,8 @@ class MovieInfo extends Component {
   };
   getRelease = () => {
     const date = this.props.release.substring(0, 4);
+    console.log(this);
+
     return date;
   };
 }

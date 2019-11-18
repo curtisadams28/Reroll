@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 class Title extends Component {
+  constructor(props) {
+    super(props);
+    this.titleLength = React.createRef();
+  }
+  componentDidMount() {
+    console.log(this.titleLength.current.clientWidth);
+  }
   render() {
     return (
-      <div className="info-content">
+      <div>
         <p className="genres">{this.createGenre()}</p>
-        <h2 className="movie-title">{this.props.title}</h2>
+        <div className="title-container">
+          <h2 ref={this.titleLength} className="movie-title">
+            {this.props.title}
+          </h2>
+        </div>
       </div>
     );
   }
