@@ -1,25 +1,33 @@
 import React, { Component } from "react";
-import dice from "../img/film.svg";
-import filter from "../img/filter.svg";
+import ReactDOM from "react-dom";
+import WindowSizeListener from "react-window-size-listener";
+
+// Components
 import Title from "./title";
 import Scorebar from "./scorebar";
 import Overview from "./overview";
 import MovieInfo from "./movieinfo";
 
-class ApiCall extends Component {
-  constructor(props) {
-    super(props);
-    this.infoLength = React.createRef();
-  }
+import dice from "../img/film.svg";
+import filter from "../img/filter.svg";
 
+class ApiCall extends Component {
   state = {
     error: null,
     isLoaded: false,
     movie: [],
-    background: ""
+    background: "",
+    window_width: ""
+  };
+
+  logWidth = () => {
+    console.log("WINDOW WIDTH: " + window.innerWidth);
   };
 
   componentDidMount() {
+    //console.log(this.windowSize);
+    window.addEventListener("resize", this.logWidth());
+
     fetch(
       "https://api.themoviedb.org/3/movie/27205?api_key=" +
         process.env.REACT_APP_MOVIE_API_KEY +
@@ -45,7 +53,7 @@ class ApiCall extends Component {
 
     //console.log(this.infoLength);
 
-    console.log(this.movie);
+    //console.log(this.movie);
   }
 
   render() {
@@ -70,8 +78,21 @@ class ApiCall extends Component {
         </div>
         <div className="background" style={mystyle}></div>
         {this.renderInfo()}
+        <div>
+          <WindowSizeListener
+            onResize={windowSize => {
+              this.setState({
+                window_width: windowSize.windowWidth
+              });
+            }}
+          />
+        </div>
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.logWidth());
   }
 
   renderInfo = () => {
@@ -80,12 +101,15 @@ class ApiCall extends Component {
         <div className="content">
           <div className="grid">
             <div className="info-grid">
-              <div ref={this.infoLength} className="info-content">
+              <div className="info-content">
                 <Title
                   title={this.state.movie.original_title}
                   genre={this.state.movie.genres}
                 />
-                <Scorebar score={this.state.movie.vote_average} />
+                <Scorebar
+                  score={this.state.movie.vote_average}
+                  window_width={this.state.window_width}
+                />
                 <Overview overview={this.state.movie.overview} />
                 <MovieInfo
                   rating={this.state.movie.release_dates}

@@ -1,19 +1,20 @@
 import React, { Component } from "react";
+import play from "../img/play_button.svg";
 class Title extends Component {
-  constructor(props) {
-    super(props);
-    this.titleLength = React.createRef();
-  }
-  componentDidMount() {
-    console.log(this.titleLength.current.clientWidth);
-  }
   render() {
     return (
       <div>
         <p className="genres">{this.createGenre()}</p>
         <div className="title-container">
-          <h2 ref={this.titleLength} className="movie-title">
+          <h2 className="movie-title">
             {this.props.title}
+            <img
+              src={play}
+              alt="triangle with all three sides equal"
+              height="47px"
+              width="47px"
+              className="trailer-button"
+            />
           </h2>
         </div>
       </div>

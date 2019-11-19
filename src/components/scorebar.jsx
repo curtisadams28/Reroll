@@ -19,7 +19,27 @@ class Scorebar extends Component {
   }
   calculateBarWidth = () => {
     const score = this.props.score / 10;
-    const barlength = score * 50;
+    /*
+
+    contentWidth = () => {
+      if (this.props.window_width < 1300) {
+        return 70;
+      } else {
+        return 50;
+      }
+    };
+    */
+    //console.log(this.props.window_width);
+
+    const barlength = score * getViewWidth(this.props);
+
+    function getViewWidth(props) {
+      if (props.window_width > 1300) {
+        return 50;
+      } else {
+        return 70;
+      }
+    }
 
     return barlength;
   };

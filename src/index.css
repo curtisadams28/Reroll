@@ -117,7 +117,7 @@ h1 {
   justify-items: center;
 }
 
-/* INFO SECTION */
+/* TITLE SECTION */
 
 .info-content {
   align-items: center;
@@ -129,22 +129,23 @@ h1 {
   margin-bottom: 10px;
 }
 
-.title-container {
-  width: 50px;
-}
-
 .movie-title {
   color: var(--text-white);
   text-transform: uppercase;
   font-size: 4em;
-  width: 50vw;
   line-height: 0.9em;
   margin-bottom: 25px;
+  display: inline-block;
 }
 
 .title {
   font-size: 0.9em;
   color: var(--text-medium-dark);
+}
+
+.trailer-button {
+  margin-bottom: -1.5px;
+  margin-left: 10px;
 }
 
 /* SCORE BAR */
@@ -220,4 +221,16 @@ h1 {
 
 .rating-text {
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 1300px) {
+  .info-content {
+    width: 70vw;
+  }
+  .bar-dark {
+    width: 70vw;
+  }
+  .overview {
+    width: 70vw;
+  }
 }
