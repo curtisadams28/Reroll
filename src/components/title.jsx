@@ -20,6 +20,7 @@ class Title extends Component {
       </div>
     );
   }
+  // Gets the genre names and combines them into a string seperated by "-"
   createGenre = () => {
     const genres = this.props.genre;
 

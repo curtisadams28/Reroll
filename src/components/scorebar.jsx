@@ -1,6 +1,22 @@
 import React, { Component } from "react";
 
 class Scorebar extends Component {
+  constructor() {
+    super();
+    this.state = {
+      width: window.innerWidth
+    };
+  }
+  // Creates an event listener that will call updateDimensions on rezise of the window
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+  }
+  updateDimensions = () => {
+    this.setState({
+      width: window.innerWidth
+    });
+  };
   render() {
     return (
       <div>
@@ -17,29 +33,26 @@ class Scorebar extends Component {
       </div>
     );
   }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+  // Calculates the width (vw) of the score bar depending on the window width
+
   calculateBarWidth = () => {
     const score = this.props.score / 10;
-    /*
 
-    contentWidth = () => {
-      if (this.props.window_width < 1300) {
+    this.contentWidth = () => {
+      if (this.state.width < 900) {
+        return 80;
+      }
+      if (this.state.width < 1300) {
         return 70;
       } else {
         return 50;
       }
     };
-    */
-    //console.log(this.props.window_width);
 
-    const barlength = score * getViewWidth(this.props);
-
-    function getViewWidth(props) {
-      if (props.window_width > 1300) {
-        return 50;
-      } else {
-        return 70;
-      }
-    }
+    const barlength = score * this.contentWidth();
 
     return barlength;
   };
