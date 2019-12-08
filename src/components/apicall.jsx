@@ -69,7 +69,7 @@ class ApiCall extends Component {
   }
 
   render() {
-    const mystyle = {
+    const backgroundImage = {
       backgroundImage: "url(" + this.state.background + ")"
     };
     console.log();
@@ -91,7 +91,7 @@ class ApiCall extends Component {
             FILTERS
           </button>
         </div>
-        <div className="background" style={mystyle}></div>
+        <div className="background" style={backgroundImage}></div>
 
         {this.renderInfo()}
       </div>
@@ -103,11 +103,11 @@ class ApiCall extends Component {
     if (this.state.isLoaded === true) {
       return (
         <div className="content">
+          <Filters
+            menuIsActive={this.state.menuIsActive}
+            genres={this.state.movieGenres}
+          />
           <div className="grid">
-            <Filters
-              menuIsActive={this.state.menuIsActive}
-              genres={this.state.movieGenres}
-            />
             <div className="info-grid">
               <div className="info-content">
                 <Title

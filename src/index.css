@@ -129,6 +129,16 @@ button:focus {
   filter: blur(4px);
   background-size: cover;
   background-position: center center;
+  animation: background-fade 3s;
+}
+
+@keyframes background-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.03;
+  }
 }
 
 .grid {
@@ -315,10 +325,12 @@ button:focus {
   width: 460px;
   opacity: 0;
   overflow: hidden;
+  user-select: none;
 
   height: calc(100vh - 80px);
   background-color: var(--background-medium);
   z-index: 1;
+  transition: 5s;
 }
 
 .menu-active {
@@ -333,52 +345,73 @@ button:focus {
 
 /* DROPDOWN MENU */
 .dropdown-box {
+  position: relative;
   margin: 40px 20px 0px 20px;
   background-color: var(--background-light);
-  height: 55px;
+  height: 60px;
   border-bottom: 2px solid var(--text-medium);
 }
+.dropdown-box-clicked {
+  border-width: 100%;
+
+  border-bottom: 2px solid var(--secondary);
+}
+
+@keyframes dropdown-underline {
+  0% {
+    border-width: 0;
+    border-bottom: 2px solid var(--text-medium);
+  }
+  100% {
+    border-width: 100%;
+    border-bottom: 2px solid var(--secondary);
+  }
+}
+
 .dropdown-box:hover {
   background-color: var(--background-hover);
   border-bottom: 2px solid var(--text-light);
   cursor: pointer;
 }
 .dropdown-name {
-  display: inline;
+  display: inline-block;
   color: var(--text-medium);
   font-size: 1.1em;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 57px;
   padding-left: 15px;
+}
+.dropdown-name-clicked {
+  animation: dropdown-name 0.1s ease;
+  animation-fill-mode: forwards;
+}
+@keyframes dropdown-name {
+  100% {
+    font-size: 0.9em;
+    line-height: 30px;
+    color: var(--secondary);
+  }
+}
+
+.dropdown-selected-genres {
+  font-size: 1.2em;
+  font-weight: 300;
+  position: absolute;
+  bottom: 7px;
+  left: 15px;
+  color: var(--text-medium);
+  display: inline-block;
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
 }
 .dropdown-arrow {
   margin: 27px 20px;
   float: right;
+  padding: 5px;
 }
-
-/* You should probably create a table here. Background isn't working*/
-
-/*
-.dropdown-options-box {
-  background-color: var(--background-light);
-  margin: 0px 20px;
-}
-.dropdown-options {
-  width: 150px;
-  display: inline-block;
-  float: right;
-}
-.dropdown-options:nth-child(2) {
-}
-
-.checkbox-svg {
-  display: inline;
-}
-
-.genre-tag {
-  display: inline;
-}
-*/
 
 .options-container {
   margin: 0px 20px;
@@ -389,30 +422,29 @@ button:focus {
 
 .dropdown-options-box {
   width: 100%;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 10px 0 10px 0;
+  padding: 0px 0 10px 0;
   overflow-y: auto;
-  max-height: 70vh;
 }
+
 .dropdown-options {
-  padding: 15px 0 0 30px;
+  position: relative;
+  padding: 8px 0 8px 40px;
+  height: 100%;
+  width: 80%;
 }
 
 .dropdown-options:hover {
-  color: white;
+  color: var(--text-light);
   cursor: pointer;
-  fill: white;
 }
 .checkbox-svg {
   display: inline-block;
   height: 100%;
   vertical-align: middle;
   cursor: pointer;
-
-  fill: white;
-}
-.genre-tag {
 }
 
 .checkbox-active {
@@ -420,49 +452,49 @@ button:focus {
 }
 
 .genre-tag {
+  font-size: 1.05em;
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
-  padding-left: 10px;
+  margin-left: 15px;
 }
 
-/*
-
-.menu-active {
-  display: initial;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100vw;
-  animation: fade-in 0.25s cubic-bezier(0.16, 0.59, 0.2, 0.92);
+.checkbox-all-on {
+  height: 24px;
 }
 
-.menu-closing {
-  display: initial;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100vw;
-  animation: fade-out 0.25s cubic-bezier(0.16, 0.59, 0.2, 0.92);
+.select-all {
+  padding: 20px;
+  cursor: pointer;
 }
 
-*/
+.select-all-tag {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  margin-left: 15px;
+}
 
 @keyframes opacity-fade-in {
   0% {
     opacity: 0;
+    height: 0px;
+  }
+  90% {
+    height: 24px;
   }
   100% {
+    height: 24px;
     opacity: 1;
   }
 }
 
 @keyframes fade-in {
   0% {
-    transform: translateX(100vw);
+    opacity: 0;
   }
   100% {
-    transform: translateX(0px);
+    opacity: 1;
   }
 }
 
@@ -502,6 +534,9 @@ button:focus {
   }
   .dropdown-options-box {
     grid-template-columns: 1fr;
+  }
+  .dropdown-selected-genres {
+    max-width: 70vw;
   }
 }
 

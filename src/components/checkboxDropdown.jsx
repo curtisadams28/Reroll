@@ -2,15 +2,26 @@ import React, { Component } from "react";
 import arrow from "../img/arrow.svg";
 import checkbox1 from "../img/checkboxOff.svg";
 import checkbox2 from "../img/checkboxOn.svg";
+import checkbox3 from "../img/checkboxAllOff.svg";
 import Checkbox from "@material-ui/core/Checkbox";
 
 const checkboxOff = <img src={checkbox1} className="checkbox-svg" alt="" />;
-const checkboxOn = <img src={checkbox2} className="checkbox-svg" alt="" />;
+const checkboxAllOn = (
+  <img
+    src={checkbox3}
+    className="checkbox-svg checkbox-all-on checkbox-active"
+    alt=""
+  />
+);
+const checkboxOn = (
+  <img src={checkbox2} className="checkbox-svg checkbox-active" alt="" />
+);
 
 class CheckboxDropdown extends Component {
   state = {
     dropdownClicked: false,
-    genresSelected: []
+    genresSelected: [],
+    selectAll: false
   };
   render() {
     let dropdownBox = "dropdown-box";
@@ -26,9 +37,10 @@ class CheckboxDropdown extends Component {
       <div>
         <div className={dropdownBox} onClick={this.handleClick}>
           <p className={dropdownName}>Genre Including</p>
+          <p className="dropdown-selected-genres">{this.createTagText()}</p>
           <img className="dropdown-arrow" src={arrow} />
         </div>
-        <div className="select-all"></div>
+
         {this.createOptions()}
       </div>
     );
@@ -41,6 +53,13 @@ class CheckboxDropdown extends Component {
       this.setState({ dropdownClicked: true });
     }
   };
+  createTagText = () => {
+    const genreString = this.state.genresSelected.join(", ");
+    if (genreString.length > 20) {
+      console.log("Hey! You're over the limit: " + genreString);
+    }
+    return genreString;
+  };
 
   createOptions = () => {
     if (this.state.dropdownClicked) {
@@ -52,7 +71,7 @@ class CheckboxDropdown extends Component {
         // Iterates through the list of genres and builds an array of html elements
         for (let index = 0; index < genresList.length; index++) {
           const element = (
-            <div key={genresList[index]} className="dropdown-options">
+            <div key={genresList[index]}>
               {this.svgElement(genresList[index], this.state.genresSelected)}
             </div>
           );
@@ -62,10 +81,36 @@ class CheckboxDropdown extends Component {
 
         return (
           <div className="options-container">
+            <div className="select-all" onClick={this.selectAll}>
+              {this.createGenreCheckbox()}
+              <p className="select-all-tag">Genres</p>
+            </div>
             <div className="dropdown-options-box">{elementArray}</div>
           </div>
         );
       }
+    }
+  };
+
+  selectAll = () => {
+    let genresList = this.props.genres.genres.map(genre => genre.name);
+
+    if (this.state.genresSelected.length > 0) {
+      this.setState({ selectAll: false, genresSelected: [] });
+    } else if (this.state.selectAll === false) {
+      this.setState({ selectAll: true, genresSelected: genresList });
+    }
+  };
+
+  createGenreCheckbox = () => {
+    if (this.state.genresSelected.length === 0) {
+      return <React.Fragment>{checkboxOff}</React.Fragment>;
+    }
+    if (this.state.selectAll === true) {
+      return <React.Fragment>{checkboxOn}</React.Fragment>;
+    }
+    if (this.state.selectAll === false) {
+      return <React.Fragment>{checkboxAllOn}</React.Fragment>;
     }
   };
 
@@ -75,11 +120,14 @@ class CheckboxDropdown extends Component {
       return (
         <div
           data-genre={currentGenre}
-          className="checkbox-svg"
+          className="checkbox-svg dropdown-options"
           onClick={this.addGenre}
         >
-          {checkboxOff}
-          <p className="genre-tag">{currentGenre}</p>
+          <label>
+            {checkboxOff}
+
+            <p className="genre-tag">{currentGenre}</p>
+          </label>
         </div>
       );
     }
@@ -96,10 +144,11 @@ class CheckboxDropdown extends Component {
       return (
         <div
           data-genre={currentGenre}
-          className="checkbox-svg checkbox-active"
+          className="checkbox-svg  dropdown-options"
           onClick={this.removeGenre}
         >
           {checkboxOn}
+
           <p className="genre-tag">{currentGenre}</p>
         </div>
       );
@@ -107,7 +156,7 @@ class CheckboxDropdown extends Component {
       return (
         <div
           data-genre={currentGenre}
-          className="checkbox-svg"
+          className="checkbox-svg dropdown-options"
           onClick={this.addGenre}
         >
           {checkboxOff}
