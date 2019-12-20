@@ -330,7 +330,7 @@ button:focus {
   height: calc(100vh - 80px);
   background-color: var(--background-medium);
   z-index: 1;
-  transition: 5s;
+  transition: 0.1s;
 }
 
 .menu-active {
@@ -351,46 +351,126 @@ button:focus {
   height: 60px;
   border-bottom: 2px solid var(--text-medium);
 }
-.dropdown-box-clicked {
-  border-width: 100%;
 
+.dropdown-underline {
   border-bottom: 2px solid var(--secondary);
+  height: 100%;
+  position: absolute;
+  bottom: -2px;
+  z-index: 1;
 }
 
-@keyframes dropdown-underline {
+.dropdown-underline-clicked {
+  animation: border-slide-in 0.1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes border-slide-in {
   0% {
-    border-width: 0;
-    border-bottom: 2px solid var(--text-medium);
+    width: 0;
   }
   100% {
-    border-width: 100%;
-    border-bottom: 2px solid var(--secondary);
+    width: 100%;
+  }
+}
+
+.dropdown-underline-not-clicked {
+  animation: border-slide-out 0.1s;
+
+  animation-fill-mode: forwards;
+}
+
+@keyframes border-slide-out {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
   }
 }
 
 .dropdown-box:hover {
   background-color: var(--background-hover);
-  border-bottom: 2px solid var(--text-light);
+
   cursor: pointer;
 }
 .dropdown-name {
   display: inline-block;
-  color: var(--text-medium);
+
   font-size: 1.1em;
   font-weight: 400;
-  line-height: 57px;
+  line-height: 62px;
   padding-left: 15px;
 }
-.dropdown-name-clicked {
-  animation: dropdown-name 0.1s ease;
+
+/* Dropdown On */
+
+.dropdown-on {
+  animation: dropdown-on 0.2s ease-out;
   animation-fill-mode: forwards;
 }
-@keyframes dropdown-name {
+@keyframes dropdown-on {
+  0% {
+    font-size: 1.1em;
+    line-height: 62px;
+    color: var(--text-medium);
+  }
   100% {
     font-size: 0.9em;
     line-height: 30px;
     color: var(--secondary);
   }
+}
+
+/* Dropdown Off */
+
+.dropdown-off {
+  animation: dropdown-off 0.1s ease-in;
+  animation-fill-mode: forwards;
+}
+@keyframes dropdown-off {
+  0% {
+    font-size: 0.9em;
+    line-height: 30px;
+    color: var(--secondary);
+  }
+
+  100% {
+    font-size: 1.1em;
+    line-height: 62px;
+    color: var(--text-medium);
+  }
+}
+
+/* Dropdown Selected On */
+
+.dropdown-selected-on {
+  font-size: 0.9em;
+  line-height: 30px;
+  color: var(--secondary);
+}
+
+/* Dropdown Selected Off */
+.dropdown-selected-off {
+  font-size: 0.9em;
+  line-height: 30px;
+
+  animation: dropdown-selected-off 0.1s ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes dropdown-selected-off {
+  0% {
+    color: var(--secondary);
+  }
+  100% {
+    color: var(--text-medium);
+  }
+}
+.dropdown-all-removed {
+  font-size: 0.9em;
+  line-height: 30px;
+  color: var(--secondary);
 }
 
 .dropdown-selected-genres {
@@ -408,25 +488,61 @@ button:focus {
   max-width: 320px;
 }
 .dropdown-arrow {
-  margin: 27px 20px;
+  margin: 25px 20px;
   float: right;
   padding: 5px;
 }
 
+.dropdown-arrow-clicked {
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+
 .options-container {
   margin: 0px 20px;
+  display: inline-block;
+  position: absolute;
+  z-index: 1;
+
   background-color: var(--background-light);
   color: var(--text-medium);
   font-weight: 300;
+  overflow-y: hidden;
+}
+
+.options-container-clicked {
+}
+
+@keyframes slide-down {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 500px;
+  }
+}
+
+.slide-enter {
+  opacity: 0;
+}
+.slide-enter-active {
+  opacity: 1;
+  transition: opacity 3s ease-out;
+}
+.slide-leave {
+  opacity: 1;
+}
+.slide-leave-active {
+  opacity: 0;
+  transition: opacity 3s ease-out;
 }
 
 .dropdown-options-box {
-  width: 100%;
+  width: 420px;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0px 0 10px 0;
-  overflow-y: auto;
 }
 
 .dropdown-options {
@@ -457,6 +573,7 @@ button:focus {
   vertical-align: middle;
   line-height: normal;
   margin-left: 15px;
+  cursor: pointer;
 }
 
 .checkbox-all-on {
@@ -464,6 +581,7 @@ button:focus {
 }
 
 .select-all {
+  grid-template-columns: 1fr;
   padding: 20px;
   cursor: pointer;
 }
@@ -537,6 +655,12 @@ button:focus {
   }
   .dropdown-selected-genres {
     max-width: 70vw;
+  }
+  .options-container {
+    width: calc(100% - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 70vh;
   }
 }
 

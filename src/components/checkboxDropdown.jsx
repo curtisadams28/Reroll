@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactCssTransitionGroup from "react-addons-css-transition-group";
 import arrow from "../img/arrow.svg";
 import checkbox1 from "../img/checkboxOff.svg";
 import checkbox2 from "../img/checkboxOn.svg";
@@ -21,7 +22,8 @@ class CheckboxDropdown extends Component {
   state = {
     dropdownClicked: false,
     genresSelected: [],
-    selectAll: false
+    selectAll: false,
+    allRemoved: false
   };
   render() {
     let dropdownBox = "dropdown-box";
@@ -31,14 +33,26 @@ class CheckboxDropdown extends Component {
       dropdownName += " dropdown-name-clicked";
     }
 
-    console.log(this.state.genresSelected);
+    //console.log(this.state.genresSelected);
 
     return (
       <div>
         <div className={dropdownBox} onClick={this.handleClick}>
-          <p className={dropdownName}>Genre Including</p>
+          <p className={`dropdown-name ${this.dropdownStateClasses()}`}>
+            Genre Including
+          </p>
           <p className="dropdown-selected-genres">{this.createTagText()}</p>
-          <img className="dropdown-arrow" src={arrow} />
+          <img
+            className={`dropdown-arrow dropdown-arrow${
+              this.state.dropdownClicked ? "-clicked" : "-not-clicked"
+            }`}
+            src={arrow}
+          />
+          <div
+            className={`dropdown-underline dropdown-underline${
+              this.state.dropdownClicked ? "-clicked" : "-not-clicked"
+            }`}
+          ></div>
         </div>
 
         {this.createOptions()}
@@ -50,14 +64,34 @@ class CheckboxDropdown extends Component {
     if (this.state.dropdownClicked) {
       this.setState({ dropdownClicked: false });
     } else {
-      this.setState({ dropdownClicked: true });
+      this.setState({ dropdownClicked: true, allRemoved: false });
     }
   };
+
+  // Checks to see what the state of the dropdown is so that it can apply the appropriate class and trigger an animation.
+  dropdownStateClasses = () => {
+    const genresSelected = this.state.genresSelected.length;
+    let clicked = this.state.dropdownClicked;
+
+    if (clicked === true && this.state.allRemoved === true) {
+      return "dropdown-all-removed";
+    } else if (clicked === true && genresSelected === 0) {
+      //console.log("No Selection ON");
+      return "dropdown-on";
+    } else if (clicked === false && genresSelected === 0) {
+      //console.log("No Selection OFF");
+      return "dropdown-off";
+    } else if (clicked === true && genresSelected > 0) {
+      //console.log("Selected ON");
+      return "dropdown-selected-on";
+    } else if (clicked === false && genresSelected > 0) {
+      // console.log("Selected OFF");
+      return "dropdown-selected-off";
+    }
+  };
+
   createTagText = () => {
     const genreString = this.state.genresSelected.join(", ");
-    if (genreString.length > 20) {
-      console.log("Hey! You're over the limit: " + genreString);
-    }
     return genreString;
   };
 
@@ -80,13 +114,24 @@ class CheckboxDropdown extends Component {
         // Returns the
 
         return (
-          <div className="options-container">
-            <div className="select-all" onClick={this.selectAll}>
-              {this.createGenreCheckbox()}
-              <p className="select-all-tag">Genres</p>
+          <ReactCssTransitionGroup
+            transitionName="slide"
+            transitionEnterTimeout={3000}
+            transitionLeaveTimeout={3000}
+          >
+            <div
+              key="slide"
+              className={`options-container options-container${
+                this.state.dropdownClicked ? "-clicked" : "-not-clicked"
+              }`}
+            >
+              <div className="select-all" onClick={this.selectAll}>
+                {this.createGenreCheckbox()}
+                <p className="select-all-tag">Genres</p>
+              </div>
+              <div className="dropdown-options-box">{elementArray}</div>
             </div>
-            <div className="dropdown-options-box">{elementArray}</div>
-          </div>
+          </ReactCssTransitionGroup>
         );
       }
     }
@@ -173,15 +218,20 @@ class CheckboxDropdown extends Component {
   addGenre = ev => {
     const genres = this.state.genresSelected;
     genres.push(ev.currentTarget.dataset.genre);
-    this.setState({ genresSelected: genres });
+    this.setState({ genresSelected: genres, allRemoved: false });
   };
   removeGenre = ev => {
     const genreCurrent = ev.currentTarget.dataset.genre;
     const genresSelected = this.state.genresSelected.filter(
       genre => genre !== genreCurrent
     );
+    console.log(genresSelected);
 
-    this.setState({ genresSelected: genresSelected });
+    if (genresSelected.length === 0) {
+      this.setState({ allRemoved: true, genresSelected: genresSelected });
+    } else {
+      this.setState({ allRemoved: false, genresSelected: genresSelected });
+    }
   };
 }
 

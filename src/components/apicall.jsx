@@ -72,7 +72,7 @@ class ApiCall extends Component {
     const backgroundImage = {
       backgroundImage: "url(" + this.state.background + ")"
     };
-    console.log();
+    //console.log(this.state);
 
     return (
       <div className="container">
