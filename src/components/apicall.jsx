@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ReactDOM from "react-dom";
 
 // Components
@@ -25,6 +25,7 @@ class ApiCall extends Component {
   };
 
   componentDidMount() {
+    //console.log(this.containerRef);
     fetch(
       "https://api.themoviedb.org/3/movie/299534?api_key=" +
         process.env.REACT_APP_MOVIE_API_KEY +
@@ -72,10 +73,11 @@ class ApiCall extends Component {
     const backgroundImage = {
       backgroundImage: "url(" + this.state.background + ")"
     };
-    //console.log(this.state);
+
+    //console.log(this.state.screenClicked);
 
     return (
-      <div className="container">
+      <div className="container" ref="containerRef">
         <div className="navbar">
           <div className="logo-container">
             <img className="app-logo" src={dice} alt="A pair of dice"></img>
@@ -94,6 +96,7 @@ class ApiCall extends Component {
         <div className="background" style={backgroundImage}></div>
 
         {this.renderInfo()}
+        <script src="../node_modules/node-waves/dist/waves.min.js"></script>
       </div>
     );
   }

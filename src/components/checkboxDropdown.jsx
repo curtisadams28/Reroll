@@ -1,12 +1,19 @@
-import React, { Component } from "react";
-import ReactCssTransitionGroup from "react-addons-css-transition-group";
+import React, {Component} from "react";
+import {CSSTransition} from "react-transition-group";
 import arrow from "../img/arrow.svg";
 import checkbox1 from "../img/checkboxOff.svg";
 import checkbox2 from "../img/checkboxOn.svg";
 import checkbox3 from "../img/checkboxAllOff.svg";
 import Checkbox from "@material-ui/core/Checkbox";
 
-const checkboxOff = <img src={checkbox1} className="checkbox-svg" alt="" />;
+const checkboxOff = (
+  <img
+    src={require("../img/checkboxOff.svg")}
+    className="checkbox-svg"
+    alt=""
+  />
+);
+
 const checkboxAllOn = (
   <img
     src={checkbox3}
@@ -33,13 +40,14 @@ class CheckboxDropdown extends Component {
       dropdownName += " dropdown-name-clicked";
     }
 
-    //console.log(this.state.genresSelected);
-
     return (
-      <div>
-        <div className={dropdownBox} onClick={this.handleClick}>
+      <div className="filter-item">
+        <div
+          className={dropdownBox + " checkbox-dropdown-box"}
+          onClick={this.handleClick}
+        >
           <p className={`dropdown-name ${this.dropdownStateClasses()}`}>
-            Genre Including
+            Selected Genres
           </p>
           <p className="dropdown-selected-genres">{this.createTagText()}</p>
           <img
@@ -60,12 +68,19 @@ class CheckboxDropdown extends Component {
     );
   }
 
-  handleClick = () => {
+  handleClick = e => {
+    console.log("dropdown clicked");
     if (this.state.dropdownClicked) {
-      this.setState({ dropdownClicked: false });
+      this.setState({dropdownClicked: false});
     } else {
-      this.setState({ dropdownClicked: true, allRemoved: false });
+      this.props.addDocumentListener(this.props.inputElement);
+      this.setState({dropdownClicked: true, allRemoved: false});
     }
+  };
+  outsideClick = () => {
+    console.log("outside click triggered");
+
+    this.setState({dropdownClicked: false});
   };
 
   // Checks to see what the state of the dropdown is so that it can apply the appropriate class and trigger an animation.
@@ -76,16 +91,12 @@ class CheckboxDropdown extends Component {
     if (clicked === true && this.state.allRemoved === true) {
       return "dropdown-all-removed";
     } else if (clicked === true && genresSelected === 0) {
-      //console.log("No Selection ON");
       return "dropdown-on";
     } else if (clicked === false && genresSelected === 0) {
-      //console.log("No Selection OFF");
       return "dropdown-off";
     } else if (clicked === true && genresSelected > 0) {
-      //console.log("Selected ON");
       return "dropdown-selected-on";
     } else if (clicked === false && genresSelected > 0) {
-      // console.log("Selected OFF");
       return "dropdown-selected-off";
     }
   };
@@ -96,44 +107,43 @@ class CheckboxDropdown extends Component {
   };
 
   createOptions = () => {
-    if (this.state.dropdownClicked) {
-      // Checks to see if the genres from the api call are available yet
-      if (this.props.genres.genres !== undefined) {
-        let genresList = this.props.genres.genres.map(genre => genre.name);
-        let elementArray = [];
+    // Checks to see if the genres from the api call are available yet
+    if (this.props.genres.genres !== undefined) {
+      let genresList = this.props.genres.genres.map(genre => genre.name);
+      let elementArray = [];
 
-        // Iterates through the list of genres and builds an array of html elements
-        for (let index = 0; index < genresList.length; index++) {
-          const element = (
-            <div key={genresList[index]}>
-              {this.svgElement(genresList[index], this.state.genresSelected)}
-            </div>
-          );
-          elementArray.push(element);
-        }
-        // Returns the
-
-        return (
-          <ReactCssTransitionGroup
-            transitionName="slide"
-            transitionEnterTimeout={3000}
-            transitionLeaveTimeout={3000}
-          >
-            <div
-              key="slide"
-              className={`options-container options-container${
-                this.state.dropdownClicked ? "-clicked" : "-not-clicked"
-              }`}
-            >
-              <div className="select-all" onClick={this.selectAll}>
-                {this.createGenreCheckbox()}
-                <p className="select-all-tag">Genres</p>
-              </div>
-              <div className="dropdown-options-box">{elementArray}</div>
-            </div>
-          </ReactCssTransitionGroup>
+      // Iterates through the list of genres and builds an array of html elements
+      for (let index = 0; index < genresList.length; index++) {
+        const element = (
+          <div key={genresList[index]}>
+            {this.svgElement(genresList[index], this.state.genresSelected)}
+          </div>
         );
+        elementArray.push(element);
       }
+      // Returns the
+
+      return (
+        <CSSTransition
+          in={this.state.dropdownClicked}
+          appear={this.state.dropdownClicked}
+          timeout={250}
+          classNames="slide"
+          unmountOnExit
+        >
+          <div
+            className={`options-container options-container${
+              this.state.dropdownClicked ? "-clicked" : "-not-clicked"
+            }`}
+          >
+            <div className="select-all" onClick={this.selectAll}>
+              {this.createGenreCheckbox()}
+              <p className="select-all-tag">Genres</p>
+            </div>
+            <div className="dropdown-options-box">{elementArray}</div>
+          </div>
+        </CSSTransition>
+      );
     }
   };
 
@@ -141,9 +151,9 @@ class CheckboxDropdown extends Component {
     let genresList = this.props.genres.genres.map(genre => genre.name);
 
     if (this.state.genresSelected.length > 0) {
-      this.setState({ selectAll: false, genresSelected: [] });
+      this.setState({selectAll: false, genresSelected: []});
     } else if (this.state.selectAll === false) {
-      this.setState({ selectAll: true, genresSelected: genresList });
+      this.setState({selectAll: true, genresSelected: genresList});
     }
   };
 
@@ -211,26 +221,21 @@ class CheckboxDropdown extends Component {
     }
   };
 
-  clickCheck = () => {
-    console.log(" clicked");
-  };
-
   addGenre = ev => {
     const genres = this.state.genresSelected;
     genres.push(ev.currentTarget.dataset.genre);
-    this.setState({ genresSelected: genres, allRemoved: false });
+    this.setState({genresSelected: genres, allRemoved: false});
   };
   removeGenre = ev => {
     const genreCurrent = ev.currentTarget.dataset.genre;
     const genresSelected = this.state.genresSelected.filter(
       genre => genre !== genreCurrent
     );
-    console.log(genresSelected);
 
     if (genresSelected.length === 0) {
-      this.setState({ allRemoved: true, genresSelected: genresSelected });
+      this.setState({allRemoved: true, genresSelected: genresSelected});
     } else {
-      this.setState({ allRemoved: false, genresSelected: genresSelected });
+      this.setState({allRemoved: false, genresSelected: genresSelected});
     }
   };
 }
