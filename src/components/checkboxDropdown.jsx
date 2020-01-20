@@ -41,7 +41,7 @@ class CheckboxDropdown extends Component {
     }
 
     return (
-      <div className="filter-item">
+      <div>
         <div
           className={dropdownBox + " checkbox-dropdown-box"}
           onClick={this.handleClick}
@@ -73,14 +73,8 @@ class CheckboxDropdown extends Component {
     if (this.state.dropdownClicked) {
       this.setState({dropdownClicked: false});
     } else {
-      this.props.addDocumentListener(this.props.inputElement);
       this.setState({dropdownClicked: true, allRemoved: false});
     }
-  };
-  outsideClick = () => {
-    console.log("outside click triggered");
-
-    this.setState({dropdownClicked: false});
   };
 
   // Checks to see what the state of the dropdown is so that it can apply the appropriate class and trigger an animation.

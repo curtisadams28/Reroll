@@ -1,42 +1,80 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 class TextInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
   state = {value: ""};
 
   render() {
     return (
-      <div
-        className={`dropdown-box text-input-container ${"container-" +
-          this.props.containerLocation}`}
-      >
-        <label className={`dropdown-name ${this.dropdownStateClasses()}`}>
-          {this.props.inputName}
-        </label>
-        <input
-          className="text-input-box"
-          id={this.props.dropdownName}
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          onClick={this.dropdownClick}
-        />
+      <div ref={this.setWrapperRef}>
+        {this.props.children}
         <div
-          className={`underline-text dropdown-underline dropdown-underline${
-            this.state.dropdownClicked ? "-clicked" : "-not-clicked"
-          }`}
-        ></div>
-
-        {this.inputValidation()}
+          className={`dropdown-box text-input-container ${"container-" +
+            this.props.containerLocation}`}
+        >
+          <label className={`dropdown-name ${this.dropdownStateClasses()}`}>
+            {this.props.inputName}
+          </label>
+          <input
+            className="text-input-box"
+            id={this.props.dropdownName}
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+            onClick={this.dropdownClick}
+            maxLength="4"
+          />
+          <div
+            className={`underline-text dropdown-underline dropdown-underline${
+              this.state.dropdownClicked ? "-clicked" : "-not-clicked"
+            }`}
+          ></div>
+          {this.inputValidation()}
+        </div>
       </div>
     );
   }
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  /**
+   * Alert if clicked on outside of element
+   */
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({dropdownClicked: false});
+      document.removeEventListener("mousedown", this.handleClickOutside);
+    }
+  }
+
   handleChange = event => {
     this.setState({value: event.target.value});
   };
   dropdownClick = () => {
+    console.log("clicked");
+
     if (this.state.dropdownClicked === true) {
-      this.setState({dropdownClicked: false});
+      //document.removeEventListener("mousedown", this.handleClickOutside);
+      //this.setState({dropdownClicked: false});
+      console.log("dropdown closing");
     } else {
-      this.props.addDocumentListener(this.props.inputElement);
+      //this.props.addDocumentListener(this.props.inputElement);
+      document.addEventListener("mousedown", this.handleClickOutside);
+      console.log("added listener");
 
       this.setState({dropdownClicked: true});
     }
@@ -74,5 +112,9 @@ class TextInput extends Component {
     }
   };
 }
+
+TextInput.propTypes = {
+  children: PropTypes.element.isRequired
+};
 
 export default TextInput;

@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import CheckboxDropdown from "./checkboxDropdown";
 import TextInput from "./textInput";
 import Dropdown from "./dropdown";
+import RadioButtons from "./radioButtons";
+import Slider from "./slider";
 
 class Filters extends Component {
   constructor(props) {
     super(props);
-    this.menuRef = React.createRef();
+
     this.inputElement1 = React.createRef();
     this.inputElement2 = React.createRef();
     this.inputElement3 = React.createRef();
@@ -27,32 +29,56 @@ class Filters extends Component {
     }
 
     return (
-      <div ref={this.menuRef} className={filterClass}>
-        <CheckboxDropdown
-          cssClass="genre-included"
-          genres={this.props.genres}
-          screenClicked={this.state.screenClicked}
-          ref={this.inputElement1}
-          inputElement="inputElement1"
-          addDocumentListener={this.addDocumentListener}
-        />
-
-        <div className="text-input-grid filter-item">
-          <TextInput
-            containerLocation="left"
-            inputName="From"
-            addDocumentListener={this.addDocumentListener}
-            screenClicked={this.state.screenClicked}
-            ref={this.inputElement2}
-            inputElement="inputElement2"
+      <div className={filterClass}>
+        <div className="filter-item">
+          <h3>GENRES</h3>
+          <CheckboxDropdown
+            cssClass="genre-included"
+            genres={this.props.genres}
           />
-          <TextInput
-            containerLocation="right"
-            inputName="To"
-            addDocumentListener={this.addDocumentListener}
-            screenClicked={this.state.screenClicked}
-            ref={this.inputElement3}
-            inputElement="inputElement3"
+          <RadioButtons />
+        </div>
+        <div className="filter-item">
+          <h3>RELEASE YEAR</h3>
+          <div className="text-input-grid">
+            <TextInput
+              containerLocation="left"
+              inputName="From"
+              addDocumentListener={this.addDocumentListener}
+              screenClicked={this.state.screenClicked}
+              ref={this.inputElement1}
+              inputElement="inputElement1"
+            />
+            <TextInput
+              containerLocation="right"
+              inputName="To"
+              addDocumentListener={this.addDocumentListener}
+              screenClicked={this.state.screenClicked}
+              ref={this.inputElement2}
+              inputElement="inputElement2"
+            />
+          </div>
+        </div>
+        <div className="filter-item">
+          <Slider
+            sliderName="Review Score"
+            sliderMin="0"
+            sliderMax="100"
+            sliderDefault="70"
+            stepValue="0.01"
+            defaultValue="70"
+            width="60px"
+          />
+        </div>
+        <div className="filter-item">
+          <Slider
+            sliderName="Number of Votes"
+            sliderMin="0"
+            sliderMax="20000"
+            sliderDefault="70"
+            stepValue="100"
+            defaultValue="5000"
+            width="80px"
           />
         </div>
       </div>
@@ -80,7 +106,6 @@ class Filters extends Component {
   handleClickContainer = e => {
     document.removeEventListener("mousedown", this.handleClickContainer);
     let inputElement = this.state.currentInputElement;
-    //console.log(this.inputElement1.current);
     new Function(this[inputElement].current.outsideClick());
     this.setState({screenClicked: true});
   };

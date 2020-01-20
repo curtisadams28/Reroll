@@ -26,6 +26,7 @@ h3 {
   --text-medium: #a7a7a7;
   --text-light: #c2c2c2;
   --text-white: #fff;
+  --ui-dark: #6a6975;
 }
 
 .container {
@@ -65,6 +66,14 @@ h1 {
   color: var(--text-light);
   margin: 0;
   font-size: 2em;
+}
+
+h3 {
+  font-weight: 400;
+  color: var(--text-light);
+  margin: 0px 0px 30px 20px;
+  color: var(--text-medium);
+  text-transform: uppercase;
 }
 button:focus {
   outline: 0;
@@ -328,7 +337,8 @@ button:focus {
   top: 80px;
   width: 460px;
   opacity: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   user-select: none;
 
   height: calc(100vh - 80px);
@@ -347,8 +357,17 @@ button:focus {
   transition: 0.25s;
 }
 
+.scrollable-container {
+  position: relative;
+}
+
+.scrollable {
+  max-height: 50px;
+}
+
 .filter-item {
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .error-message {
@@ -378,6 +397,7 @@ button:focus {
   position: absolute;
   bottom: -2px;
   z-index: 1;
+  pointer-events: none;
 }
 
 .dropdown-underline-clicked {
@@ -424,69 +444,34 @@ button:focus {
 }
 
 /* Dropdown On */
-
 .dropdown-on {
-  animation: dropdown-on 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation-fill-mode: forwards;
+  font-size: 0.9em;
+  line-height: 30px;
+  color: var(--secondary);
+  transition: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-@keyframes dropdown-on {
-  0% {
-    font-size: 1.1em;
-    line-height: 62px;
-    color: var(--text-medium);
-  }
-  100% {
-    font-size: 0.9em;
-    line-height: 30px;
-    color: var(--secondary);
-  }
-}
-
-/* Dropdown Off */
 
 .dropdown-off {
-  animation: dropdown-off 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation-fill-mode: forwards;
+  font-size: 1.1em;
+  line-height: 62px;
+  color: var(--text-medium);
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-@keyframes dropdown-off {
-  0% {
-    font-size: 0.9em;
-    line-height: 30px;
-    color: var(--secondary);
-  }
-
-  100% {
-    font-size: 1.1em;
-    line-height: 62px;
-    color: var(--text-medium);
-  }
-}
-
-/* Dropdown Selected On */
 
 .dropdown-selected-on {
   font-size: 0.9em;
   line-height: 30px;
   color: var(--secondary);
+  transition: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Dropdown Selected Off */
 .dropdown-selected-off {
   font-size: 0.9em;
   line-height: 30px;
-
-  animation: dropdown-selected-off 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation-fill-mode: forwards;
+  color: var(--text-medium);
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-@keyframes dropdown-selected-off {
-  0% {
-    color: var(--secondary);
-  }
-  100% {
-    color: var(--text-medium);
-  }
-}
 .dropdown-all-removed {
   font-size: 0.9em;
   line-height: 30px;
@@ -522,7 +507,7 @@ button:focus {
   margin: 0px 20px;
   display: inline-block;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
 
   background-color: var(--background-light);
   color: var(--text-medium);
@@ -667,6 +652,82 @@ button:focus {
   transition: background-color 200ms;
 }
 
+/* RADIO BUTTONS */
+.radio-button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 30px 20px 0 20px;
+}
+.radio-button-left {
+}
+.radio-button-centre {
+  text-align: center;
+}
+.radio-button-right {
+  text-align: right;
+}
+.radio-label {
+  margin-right: 10px;
+  color: var(--text-medium);
+  font-weight: 300;
+  font-size: 1.1em;
+  margin-left: 10px;
+  cursor: pointer;
+  display: inline;
+}
+
+.radio-button-grid input[type="radio"] {
+}
+
+.radio-container {
+  cursor: pointer;
+}
+
+.radio-button {
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid var(--ui-dark);
+  margin-bottom: -2.5px;
+  position: relative;
+}
+
+.radio-button-inner {
+  width: 10px;
+  height: 10px;
+  background-color: var(--secondary);
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-top: 3px;
+  transform: scale(0.00001);
+  transition: 100ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.radio-checked {
+  transform: scale(1);
+  transition: 100ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/*
+.radio-button:after {
+  content: "";
+  height: 8px;
+  width: 8px;
+  background-color: var(--secondary);
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  transition: 100ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.radio-button-grid input[type="radio"]:checked ~ .radio-button:after {
+  transform: translate(-50%, -50%) scale(1);
+}
+*/
+
 /* TEXT INPUT */
 .text-input-grid {
   display: grid;
@@ -682,6 +743,14 @@ button:focus {
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 1;
+
+  font-family: "Titillium Web", sans-serif;
+  font-size: 1.2em;
+  font-weight: 200;
+  padding-left: 15px;
+  color: var(--text-medium);
+  margin-bottom: -9px;
 }
 
 .container-left {
@@ -700,12 +769,6 @@ label {
 }
 */
 input[type="text"] {
-  font-family: "Titillium Web", sans-serif;
-  font-size: 1.2em;
-  font-weight: 200;
-  padding-left: 15px;
-  color: var(--text-medium);
-  margin-bottom: -9px;
 }
 input:focus {
   outline: 0;
@@ -715,6 +778,83 @@ input:focus {
   cursor: text;
 }
 
+/* SLIDER */
+
+.review-score-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slidercontainer {
+  position: relative;
+  width: 100%;
+  margin: 0px 20px 0px 20px;
+}
+.slider {
+  width: calc(100% - 40px);
+  -webkit-appearance: none;
+  background: var(--ui-dark);
+  appearance: none;
+  height: 5px;
+  outline: none;
+  opacity: 0.7;
+  border-radius: 5px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: 200ms;
+}
+.slider::-webkit-slider-thumb:hover {
+  box-shadow: 0px 5px 5px #27292b;
+  background: var(--secondary);
+  transform: scale(1.17);
+  transition: 250ms;
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.slider-bar {
+  background-color: var(--secondary);
+  width: 50px;
+  height: 5px;
+  position: absolute;
+  bottom: 6px;
+  left: 3px;
+  border-radius: 5px;
+}
+
+.slider-numbers {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  width: 60px;
+  height: 40px;
+  border: none;
+  background-color: var(--background-light);
+  cursor: text;
+}
+
+.slider-numbers-text {
+  font-family: "Titillium Web", sans-serif;
+  font-size: 1.2em;
+  font-weight: 200;
+  text-align: center;
+  color: var(--text-medium);
+  margin-top: 5px;
+}
 @keyframes opacity-fade-in {
   0% {
     opacity: 0;
