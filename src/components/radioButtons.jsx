@@ -2,7 +2,6 @@ import React, {Component} from "react";
 class RadioButtons extends Component {
   state = {selected: "including"};
   render() {
-    console.log(this.state.selected);
     return (
       <div className="radio-button-grid">
         <span
@@ -51,7 +50,9 @@ class RadioButtons extends Component {
   // Handles the onClick event and gets the name of the radio button clicked.
   handleClick = e => {
     e.stopPropagation();
-    this.setState({selected: e.currentTarget.getAttribute("name")});
+    const selected = e.currentTarget.getAttribute("name");
+    this.props.addQuery("selectionType", selected);
+    this.setState({selected: selected});
   };
   // returns an additional class for the radio button that is clicked for animations.
   radioChecked = type => {

@@ -69,7 +69,6 @@ class CheckboxDropdown extends Component {
   }
 
   handleClick = e => {
-    console.log("dropdown clicked");
     if (this.state.dropdownClicked) {
       this.setState({dropdownClicked: false});
     } else {
@@ -145,8 +144,11 @@ class CheckboxDropdown extends Component {
     let genresList = this.props.genres.genres.map(genre => genre.name);
 
     if (this.state.genresSelected.length > 0) {
+      // sets state in parent component.
+      this.props.addQuery("selectedGenres", []);
       this.setState({selectAll: false, genresSelected: []});
     } else if (this.state.selectAll === false) {
+      this.props.addQuery("selectedGenres", genresList);
       this.setState({selectAll: true, genresSelected: genresList});
     }
   };
@@ -218,6 +220,7 @@ class CheckboxDropdown extends Component {
   addGenre = ev => {
     const genres = this.state.genresSelected;
     genres.push(ev.currentTarget.dataset.genre);
+    this.props.addQuery("selectedGenres", genres);
     this.setState({genresSelected: genres, allRemoved: false});
   };
   removeGenre = ev => {
@@ -225,6 +228,7 @@ class CheckboxDropdown extends Component {
     const genresSelected = this.state.genresSelected.filter(
       genre => genre !== genreCurrent
     );
+    this.props.addQuery("selectedGenres", genresSelected);
 
     if (genresSelected.length === 0) {
       this.setState({allRemoved: true, genresSelected: genresSelected});

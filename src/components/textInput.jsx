@@ -7,7 +7,7 @@ class TextInput extends Component {
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
-  state = {value: ""};
+  state = {value: "", valueOver: false, error: ""};
 
   render() {
     return (
@@ -56,25 +56,44 @@ class TextInput extends Component {
    */
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.props.addQuery(
+        `releaseYear${this.props.inputName}`,
+        this.state.value
+      );
       this.setState({dropdownClicked: false});
       document.removeEventListener("mousedown", this.handleClickOutside);
     }
   }
 
+  // Updates the state when a text input is detected
   handleChange = event => {
-    this.setState({value: event.target.value});
+    const value = event.target.value;
+
+    // Simple input validation. The error object is used by inputValidation()
+    const currentYear = new Date().getFullYear();
+    let error = "none";
+    if (isNaN(value)) {
+      error = "Must be a number eg. 1955";
+    }
+    if (value < 0) {
+      error = "Year cannot be negative";
+    }
+    if (value > currentYear) {
+      error = `Year cannot go beyond ${currentYear}`;
+    }
+    console.log(error);
+    this.setState({
+      value: value,
+      error: error
+    });
   };
   dropdownClick = () => {
-    console.log("clicked");
-
     if (this.state.dropdownClicked === true) {
       //document.removeEventListener("mousedown", this.handleClickOutside);
       //this.setState({dropdownClicked: false});
-      console.log("dropdown closing");
     } else {
       //this.props.addDocumentListener(this.props.inputElement);
       document.addEventListener("mousedown", this.handleClickOutside);
-      console.log("added listener");
 
       this.setState({dropdownClicked: true});
     }
@@ -86,14 +105,13 @@ class TextInput extends Component {
    *
    */
   inputValidation = () => {
-    if (isNaN(this.state.value)) {
-      console.log("no a number");
-      return <p className="error-message">Must be a number eg. 1955</p>;
+    if (this.state.error != "none") {
+      return <p className="error-message">{this.state.error}</p>;
     }
   };
 
   outsideClick = () => {
-    console.log("outside click triggered");
+    //this.props.addQuery(`releaseYear${this.props.inputName}`, this.state.value);
 
     this.setState({dropdownClicked: false});
   };

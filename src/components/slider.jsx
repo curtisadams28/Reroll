@@ -26,6 +26,8 @@ class Slider extends Component {
             min={this.props.sliderMin}
             max={this.props.sliderMax}
             onChange={this.handleSliderChange}
+            onTouchEnd={this.sendData}
+            onMouseUp={this.sendData}
             className="slider"
             id="myRange"
             step={this.props.stepValue}
@@ -35,9 +37,8 @@ class Slider extends Component {
       </div>
     );
   }
-  handleSliderChange = e => {
-    console.log(e.target.value);
 
+  handleSliderChange = e => {
     this.setState({value: e.target.value});
   };
   handleTextChange = e => {
@@ -46,8 +47,10 @@ class Slider extends Component {
       value = 1;
     }
     //value.substring(0, value.length - 1);
-    console.log(value);
     this.setState({value: value});
+  };
+  sendData = () => {
+    this.props.addQuery([this.props.objectName], Math.ceil(this.state.value));
   };
 }
 

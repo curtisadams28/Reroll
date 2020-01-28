@@ -10,8 +10,6 @@ class Dropdown extends Component {
   };
 
   render() {
-    console.log(this.props.styles);
-    console.log(this.state.selectedOption);
     return (
       <div className="dropdown-grid-column">
         <div

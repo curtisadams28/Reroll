@@ -21,8 +21,18 @@ class ApiCall extends Component {
     movie: [],
     background: "",
     menuIsActive: false,
-    movieGenres: []
+    movieGenres: [],
+    suggestClicked: false,
+    queryString: "",
+    movieList: {}
   };
+
+  componentDidUpdate() {
+    const movieObject = this.state.movieList;
+    //const listLength = movieObject.results.length;
+
+    console.log(this.state.movieList);
+  }
 
   componentDidMount() {
     //console.log(this.containerRef);
@@ -83,7 +93,9 @@ class ApiCall extends Component {
             <img className="app-logo" src={dice} alt="A pair of dice"></img>
             <h1 className="name">REROLL</h1>
           </div>
-          <button className="nav-buttons suggest">SUGGEST A MOVIE</button>
+          <button className="nav-buttons suggest" onClick={this.suggestClicked}>
+            SUGGEST A MOVIE
+          </button>
           <button
             onClick={this.handleButton}
             className="nav-buttons filters"
@@ -109,8 +121,10 @@ class ApiCall extends Component {
           <Filters
             menuIsActive={this.state.menuIsActive}
             genres={this.state.movieGenres}
+            suggestClicked={this.state.suggestClicked}
+            sendQueryString={this.sendQueryString}
           />
-          <div className="grid">
+          <div className={`grid ${this.removeContent()}`}>
             <div className="info-grid">
               <div className="info-content">
                 <Title
@@ -132,7 +146,27 @@ class ApiCall extends Component {
       );
     }
   };
-  suggestMovie = () => {};
+
+  suggestClicked = () => {
+    this.setState({suggestClicked: true});
+  };
+
+  suggestMovie = query => {
+    let queryFull = `https://api.themoviedb.org/3/discover/movie/?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`;
+
+    let moviesResult;
+
+    fetch(queryFull)
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({movieList: result});
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  };
   handleButton = () => {
     if (this.state.menuIsActive === false) {
       this.setState({
@@ -143,6 +177,15 @@ class ApiCall extends Component {
         menuIsActive: false
       });
     }
+  };
+  removeContent = () => {
+    if (this.state.menuIsActive) {
+      return "grid-off";
+    }
+  };
+  sendQueryString = query => {
+    this.suggestMovie(query);
+    this.setState({suggestClicked: false});
   };
 }
 

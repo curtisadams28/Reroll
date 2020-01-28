@@ -340,7 +340,7 @@ button:focus {
   overflow-y: auto;
   overflow-x: hidden;
   user-select: none;
-
+  pointer-events: none;
   height: calc(100vh - 80px);
   background-color: var(--background-medium);
   z-index: 1;
@@ -350,6 +350,7 @@ button:focus {
 .menu-active {
   right: 0;
   opacity: 1;
+  pointer-events: visible;
   transition: 0.25s;
 }
 .menu-closing {
@@ -768,8 +769,12 @@ label {
   line-height: 62px;
 }
 */
-input[type="text"] {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
 input:focus {
   outline: 0;
 }
@@ -924,6 +929,9 @@ input:focus {
     overflow-y: auto;
     max-height: 70vh;
   }
+  .grid-off {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -963,5 +971,18 @@ input:focus {
   }
   .runtime-text {
     float: left;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .radio-button-grid {
+    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: none;
+  }
+  .radio-button-centre {
+    text-align: left;
+  }
+  .radio-button-right {
+    text-align: left;
   }
 }
