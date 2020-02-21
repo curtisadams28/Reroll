@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ISO6391 from "iso-639-1";
 
 class MovieInfo extends Component {
@@ -7,8 +7,8 @@ class MovieInfo extends Component {
       <div className="movie-info-container">
         <div className="info-row info-row-top">
           <div className="rating">
-            <p className="title">Rating (US)</p>
-            <p className="info-text rating-text">{this.getRating()}</p>
+            <p className="title">Number of Votes</p>
+            <p className="info-text rating-text">{this.getVotes()}</p>
           </div>
           <div className="movie-info language">
             <p className="title">Main Language</p>
@@ -29,7 +29,9 @@ class MovieInfo extends Component {
     );
   }
   // Searches the results for the US rating and returns it.
-  getRating = () => {
+  getVotes = () => {
+    return this.props.votes;
+    /*
     const result = this.props.rating.results.filter(
       lang => lang.iso_3166_1 === "US"
     );
@@ -40,6 +42,7 @@ class MovieInfo extends Component {
     } else {
       return rating;
     }
+    */
   };
   // Finds the full language name based on the language code
   getLanguage = () => {

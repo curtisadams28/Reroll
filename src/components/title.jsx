@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import play from "../img/play_button.svg";
 class Title extends Component {
   render() {
@@ -7,14 +7,12 @@ class Title extends Component {
         <p className="genres">{this.createGenre()}</p>
         <div className="title-container">
           <h2 className="movie-title">
-            {this.props.title}
-            <img
-              src={play}
-              alt="triangle with all three sides equal"
-              height="47px"
-              width="47px"
-              className="trailer-button"
-            />
+            {this.props.title}{" "}
+            <div className="release-year">
+              <p className="release-year-text">
+                {this.props.date.substring(0, 4)}
+              </p>
+            </div>
           </h2>
         </div>
       </div>
@@ -22,21 +20,21 @@ class Title extends Component {
   }
   // Gets the genre names and combines them into a string seperated by "-"
   createGenre = () => {
-    const genres = this.props.genre;
-
-    if (genres === undefined) {
+    const genreId = this.props.genre;
+    const genreList = this.props.genreList;
+    let genreString;
+    if (genreId === undefined) {
       return;
     } else {
-      let text = "";
-
-      for (let index = 0; index < genres.length; index++) {
-        if (index === genres.length - 1) {
-          text = text + genres[index].name;
-          break;
+      for (const id of genreId) {
+        let genre = this.props.genreList.find(element => element.id === id);
+        if (genreString === undefined) {
+          genreString = genre.name;
+        } else {
+          genreString = genreString + "-" + genre.name;
         }
-        text = text + genres[index].name + " - ";
       }
-      return text;
+      return genreString;
     }
   };
 }

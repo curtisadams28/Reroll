@@ -204,14 +204,14 @@ class Filters extends Component {
     let to = this.state.releaseYearTo;
 
     if (from != "" && to != "") {
-      return `&release_date.gte=${from}-01-01&release_date.lte=${to}-12-31`;
+      return `&primary_release_date.gte=${from}-01-01&primary_release_date.lte=${to}-12-31`;
     }
 
     if (to != "") {
-      return `&release_date.lte=${to}-12-31`;
+      return `&primary_release_date.lte=${to}-12-31`;
     }
     if (from != "") {
-      return `&release_date.gte=${from}-01-01`;
+      return `&primary_release_date.gte=${from}-01-01`;
     }
     return "";
   };
