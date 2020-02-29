@@ -15,14 +15,13 @@ import dice from "../img/film.svg";
 import filter from "../img/filter.svg";
 import play from "../img/play_button.svg";
 import arrow from "../img/next.svg";
-import close from "../img/cancel.svg";
+import close from "../img/close.svg";
+import cancel from "../img/cancel.svg";
 
 class ApiCall extends Component {
   state = {
     error: null,
-    error1: null,
     isLoaded: false,
-    isLoaded1: false,
     movie: [],
     background: "",
     backgroundChange: false,
@@ -31,34 +30,15 @@ class ApiCall extends Component {
     suggestClicked: false,
     queryString: "",
     trailerActive: false,
-    trailerId: ""
+    trailerId: "",
+    fetchError: false,
+    errorMessage: "",
+    trailerFound: ""
   };
 
-  componentDidUpdate() {
-    //const listLength = movieObject.results.length;
-    //console.log(this.state.movie);
-    //console.log(this.state.movieList);
-    //console.log(this.state.suggestClicked);
-  }
+  componentDidUpdate() {}
 
   componentDidMount() {
-    //console.log(this.containerRef);
-    /*
-    fetch(
-      "https://api.themoviedb.org/3/movie/299534?api_key=" +
-        process.env.REACT_APP_MOVIE_API_KEY +
-        "&append_to_response=release_dates"
-    )
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          isLoaded: true,
-          movie: result,
-          background:
-            "https://image.tmdb.org/t/p/original" + result.backdrop_path
-        });
-      });
-      */
     this.suggestMovie("");
 
     fetch(
@@ -74,14 +54,6 @@ class ApiCall extends Component {
   }
 
   render() {
-    /*
-    const backgroundImage = {
-      backgroundImage: `${this.state.background}`
-    };
-
-    console.log(backgroundImage);
-    */
-
     return (
       <div className="container" ref="containerRef">
         <div className="navbar">
@@ -90,24 +62,31 @@ class ApiCall extends Component {
             <h1 className="name">REROLL</h1>
           </div>
           <button className="nav-buttons suggest" onClick={this.suggestClicked}>
-            SUGGEST A MOVIE
+            <p>SUGGEST A MOVIE</p>
           </button>
           <button
             onClick={this.handleButton}
             className="nav-buttons filters"
             value="FILTERS"
           >
-            <img className="filter-icon" src={filter} alt="" />
+            <img
+              className="filter-icon"
+              src={this.state.menuIsActive ? close : filter}
+              alt=""
+            />
             FILTERS
           </button>
         </div>
-
         <div className="image-container">
-          {/*<img className="background" src={this.state.background}></img>>*/}
           <Background background={this.state.background} />
         </div>
-
-        {this.renderInfo()}
+        <Filters
+          menuIsActive={this.state.menuIsActive}
+          genres={this.state.movieGenres}
+          suggestClicked={this.state.suggestClicked}
+          sendQueryString={this.sendQueryString}
+        />
+        ;{this.renderInfo()}
         {this.renderTrailer()}
       </div>
     );
@@ -115,44 +94,40 @@ class ApiCall extends Component {
 
   renderInfo = () => {
     // The movie info will only be displayed if the api call got a response
-
-    if (this.state.isLoaded === true) {
-      return (
-        <div className="content">
-          <Filters
-            menuIsActive={this.state.menuIsActive}
-            genres={this.state.movieGenres}
-            suggestClicked={this.state.suggestClicked}
-            sendQueryString={this.sendQueryString}
-          />
-          <div className={`grid ${this.removeContent()}`}>
-            <div className="info-grid">
-              <div className="info-content">
-                <Title
-                  title={this.state.movie.original_title}
-                  genre={this.state.movie.genre_ids}
-                  genreList={this.state.movieGenres.genres}
-                  date={this.state.movie.release_date}
-                />
-                <Scorebar score={this.state.movie.vote_average} />
-                <Overview overview={this.state.movie.overview} />
-                <button
-                  onClick={this.trailerActive}
-                  className="watch-trailer fill"
-                >
-                  <span>Watch Trailer</span>
-                </button>
+    if (!this.state.fetchError) {
+      if (this.state.isLoaded) {
+        return (
+          <div className="content">
+            <div className={`grid ${this.removeContent()}`}>
+              <div className="info-grid">
+                <div className="info-content">
+                  <Title
+                    title={this.state.movie.title}
+                    genre={this.state.movie.genre_ids}
+                    genreList={this.state.movieGenres.genres}
+                    date={this.state.movie.release_date}
+                  />
+                  <Scorebar score={this.state.movie.vote_average} />
+                  <Overview overview={this.state.movie.overview} />
+                  <button
+                    onClick={this.trailerActive}
+                    className="watch-trailer fill"
+                  >
+                    <span>Watch Trailer</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      );
+        );
+      }
+    } else {
+      return <p className="fetch-error-message">{this.state.errorMessage}</p>;
     }
   };
 
   renderTrailer = () => {
     if (this.state.trailerActive) {
-      //console.log(this.state.movie.id);
       return (
         <CSSTransition
           in={this.state.trailerActive}
@@ -161,24 +136,42 @@ class ApiCall extends Component {
         >
           <div className="trailer-container">
             <div className="close-button-container">
-              <img src={close} alt="close button" onClick={this.closeTrailer} />
+              <img
+                src={cancel}
+                fill="white"
+                alt="close button"
+                onClick={this.closeTrailer}
+              />
             </div>
-
-            <iframe
-              className="video"
-              color="white"
-              src={
-                "https://www.youtube.com/embed/" +
-                this.state.trailerId +
-                "?autoplay=1&showinfo=0&fs=1;"
-              }
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen="allowfullscreen"
-              mozallowfullscreen="mozallowfullscreen"
-            ></iframe>
+            {this.trailerErrorCheck()}
           </div>
         </CSSTransition>
+      );
+    }
+  };
+
+  trailerErrorCheck = () => {
+    if (this.state.trailerFound) {
+      return (
+        <iframe
+          className="video"
+          color="white"
+          src={
+            "https://www.youtube.com/embed/" +
+            this.state.trailerId +
+            "?autoplay=1&showinfo=0&fs=1;"
+          }
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen="allowfullscreen"
+          mozallowfullscreen="mozallowfullscreen"
+        ></iframe>
+      );
+    } else {
+      return (
+        <div className="video">
+          <p className="trailer-error-message">No trailer found</p>
+        </div>
       );
     }
   };
@@ -200,71 +193,103 @@ class ApiCall extends Component {
 
   suggestMovie = query => {
     let queryFull = `https://api.themoviedb.org/3/discover/movie/?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`;
-    console.log(query);
-    let moviesResult;
-    /*
-    fetch(queryFull)
-      .then(res => res.json())
-      .then(
-        result => {
-          const arrayLength = Math.floor(
-            Math.random() * result.results.length + 1
-          );
-          let movObj = result.results[arrayLength];
+    //console.log(query);
 
-          this.setState({
-            movie: movObj,
-            isLoaded: true,
-            background:
-              "https://image.tmdb.org/t/p/original" + movObj.backdrop_path
-          });
-        },
-        error => {
-          console.log(error);
-        }
-      );
-      */
+    // This first fetch is to get the number of pages from the api
     fetch(queryFull)
-      .then(res => res.json())
-
-      .then(result => {
-        const arraySelection = Math.floor(
-          Math.random() * result.results.length + 1
-        );
-        let movObj = result.results[arraySelection];
-        return movObj;
+      .then(res => {
+        return res.json();
       })
+      .then(res => {
+        return res.total_pages;
+      })
+      .then(total_pages => {
+        //console.log("queryfull", queryFull, total_pages);
+        console.log(total_pages);
 
-      .then(movObj => {
-        //console.log(movObj);
+        if (total_pages === 0) {
+          throw "Couldn't find any results";
+        }
+        let pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
+        fetch(queryFull + pageQuery)
+          // Error checking. See catch at the bottom of the fetch request
+          .then(res => {
+            /*
+        if (!res.ok) {
+          throw Error();
+        }
+        */
 
-        // Fetches the trailer url from the movie id (taken from the fetch request above)
-        fetch(
-          "https://api.themoviedb.org/3/movie/" +
-            movObj.id +
-            "/videos?api_key=" +
-            process.env.REACT_APP_MOVIE_API_KEY
-        )
-          .then(res => res.json())
-          .then(
-            result => {
-              //console.log(result);
+            return res.json();
+          })
 
-              this.setState({
-                trailerId: result.results[0].key,
-                movie: movObj,
-                isLoaded: true,
-                background:
-                  "https://image.tmdb.org/t/p/original" + movObj.backdrop_path
-              });
-            },
-            error => {
-              this.setState({
-                isLoaded: true,
-                error
-              });
-            }
-          );
+          .then(res => {
+            //console.log("JSON result", res);
+
+            const arraySelection = Math.floor(
+              Math.random() * res.results.length
+            );
+            //console.log("arrayselection", arraySelection);
+
+            let movObj = res.results[arraySelection];
+            //console.log("mobObj", movObj);
+
+            return movObj;
+          })
+
+          .then(movObj => {
+            // Fetches the trailer url from the movie id (taken from the fetch request above)
+
+            /**
+             * ERROR TO FIX
+             * The key is sometimes undefined meaning there is no trailer. When this is the case, a new movie should be selected.
+             */
+            fetch(
+              "https://api.themoviedb.org/3/movie/" +
+                movObj.id +
+                "/videos?api_key=" +
+                process.env.REACT_APP_MOVIE_API_KEY
+            )
+              .then(res => res.json())
+              .then(
+                result => {
+                  console.log(result);
+                  let trailerKey;
+                  let trailerFound;
+                  if (result.results.length === 0) {
+                    trailerFound = false;
+                    trailerKey = null;
+                  } else {
+                    trailerFound = true;
+                    trailerKey = result.results[0].key;
+                  }
+
+                  this.setState({
+                    trailerId: trailerKey,
+                    fetchError: false,
+                    trailerFound: trailerFound,
+                    movie: movObj,
+                    isLoaded: true,
+                    background:
+                      "https://image.tmdb.org/t/p/original" +
+                      movObj.backdrop_path
+                  });
+                },
+                error => {
+                  this.setState({
+                    isLoaded: true,
+                    error
+                  });
+                }
+              );
+          });
+      })
+      .catch(err => {
+        this.setState({
+          fetchError: true,
+          errorMessage: err,
+          trailerActive: false
+        });
       });
   };
   trailerActive = () => {

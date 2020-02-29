@@ -96,10 +96,14 @@ button:focus {
   width: 184px;
   color: var(--text-dark);
   font-size: 1.1em;
+  transform: scale(1);
 }
 .filters:hover {
   background-color: #7575c8;
-  font-size: 1.14em;
+}
+
+.filters:hover p {
+  transform: scale(2);
 }
 
 .filter-icon {
@@ -117,8 +121,18 @@ button:focus {
 
 .suggest:hover {
   background-color: #eb61af;
-  font-size: 1.22em;
-  transition: 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  transition: transform 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.suggest p {
+  transform: scale(1);
+  transition: transform 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.suggest:hover p {
+  transform: scale(1.05);
+  transition: transform 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* PAGE WRAPPER AND BACKGROUND */
@@ -127,6 +141,7 @@ button:focus {
   height: calc(100vh - 80px);
   position: absolute;
   top: 80px;
+  overflow-x: hidden;
 }
 
 .testdiv {
@@ -249,6 +264,27 @@ button:focus {
 }
 */
 
+.fetch-error-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%);
+  transform: translateX(-50%);
+
+  z-index: 6;
+  font-weight: 700;
+  font-size: 3em;
+  color: var(--text-medium-dark);
+}
+
+.trailer-error-message {
+  font-weight: 700;
+  font-size: 3em;
+  color: var(--text-medium-dark);
+  text-align: center;
+  padding-top: 80px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 100%;
@@ -307,6 +343,7 @@ button:focus {
   display: inline-block;
   border-radius: 100px;
 }
+
 .release-year-text {
   font-weight: 200;
   font-size: 0.3em;
@@ -469,14 +506,14 @@ button:focus {
   height: calc(100vh - 80px);
   background-color: var(--background-medium);
   z-index: 1;
-  transition: 0.1s;
+  transition: opacity 0.1s;
 }
 
 .menu-active {
   right: 0;
   opacity: 1;
   pointer-events: visible;
-  transition: 0.25s;
+  transition: opacity 0.25s;
 }
 .menu-closing {
   opacity: 0;
@@ -1076,6 +1113,10 @@ input:focus {
   transition: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.close-button-container svg {
+  fill: #555555;
+}
+
 .trailer-container img:hover {
   transform: scale(1.1);
   transition: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -1210,6 +1251,7 @@ input:focus {
 @media only screen and (max-width: 600px) {
   .movie-title {
     font-size: 2em;
+    line-height: 1.2em;
   }
   .trailer-button {
     display: none;
@@ -1250,6 +1292,12 @@ input:focus {
   }
   .background {
     display: none;
+  }
+  .release-year {
+    margin-bottom: -3px;
+
+    font-size: 2em;
+    width: 65px;
   }
 }
 
