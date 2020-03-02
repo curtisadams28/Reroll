@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 class Slider extends Component {
-  state = {value: 70};
   componentWillMount() {
     this.setState({value: this.props.defaultValue});
   }
@@ -15,9 +14,7 @@ class Slider extends Component {
           onChange={this.handleTextChange}
           style={{width: this.props.width}}
         >
-          <p className="slider-numbers-text">
-            {Math.ceil(this.state.value) + "+"}
-          </p>
+          <p className="slider-numbers-text">{this.sliderDisplay()}</p>
         </div>
 
         <div className="slidercontainer">
@@ -37,6 +34,14 @@ class Slider extends Component {
       </div>
     );
   }
+
+  sliderDisplay = () => {
+    if (this.props.objectName === "reviewScore") {
+      return Math.round(this.state.value / 10) + "+";
+    } else {
+      return Math.ceil(this.state.value) + "+";
+    }
+  };
 
   handleSliderChange = e => {
     this.setState({value: e.target.value});

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 class Scorebar extends Component {
   constructor() {
@@ -25,7 +25,7 @@ class Scorebar extends Component {
           <div className="bar-dark"></div>
           <div
             className="bar-light"
-            style={{ width: this.calculateBarWidth() + "vw" }}
+            style={{width: this.calculateBarWidth() + "vw"}}
           >
             <p className="score">{this.props.score}</p>
           </div>

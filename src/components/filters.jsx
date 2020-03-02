@@ -21,8 +21,8 @@ class Filters extends Component {
     selectionType: "including",
     releaseYearFrom: "",
     releaseYearTo: "",
-    reviewScore: undefined,
-    votes: undefined
+    reviewScore: 60,
+    votes: 2000
   };
   componentDidMount() {}
 
@@ -84,9 +84,9 @@ class Filters extends Component {
             objectName="reviewScore"
             sliderMin="0"
             sliderMax="100"
-            sliderDefault="70"
+            sliderDefault={this.state.reviewScore}
             stepValue="0.01"
-            defaultValue="70"
+            defaultValue={this.state.reviewScore}
             width="60px"
             addQuery={this.addQuery}
           />
@@ -97,9 +97,9 @@ class Filters extends Component {
             objectName="votes"
             sliderMin="0"
             sliderMax="20000"
-            sliderDefault="70"
+            sliderDefault={this.state.votes}
             stepValue="100"
-            defaultValue="5000"
+            defaultValue={this.state.votes}
             width="80px"
             addQuery={this.addQuery}
           />

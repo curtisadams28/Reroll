@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import play from "../img/play_button.svg";
+
 class Title extends Component {
   render() {
     return (
