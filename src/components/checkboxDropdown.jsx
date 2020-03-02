@@ -7,11 +7,23 @@ import checkbox3 from "../img/checkboxAllOff.svg";
 import Checkbox from "@material-ui/core/Checkbox";
 
 const checkboxOff = (
-  <img
-    src={require("../img/checkboxOff.svg")}
+  <svg
+    id="Checkbox_Off"
+    data-name="Checkbox Off"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
     className="checkbox-svg"
-    alt=""
-  />
+  >
+    <rect id="Bounds" width="24" height="24" fill="none" />
+    <path
+      id="Icon"
+      d="M19,5V19H5V5Zm0-2H5A2.006,2.006,0,0,0,3,5V19a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V5a2.006,2.006,0,0,0-2-2Z"
+      fill="#a7a7a7"
+      opacity="0.54"
+    />
+  </svg>
 );
 
 const checkboxAllOn = (
@@ -22,7 +34,23 @@ const checkboxAllOn = (
   />
 );
 const checkboxOn = (
-  <img src={checkbox2} className="checkbox-svg checkbox-active" alt="" />
+  //<img src={checkbox2} className="checkbox-svg checkbox-active" alt="" />
+  <svg
+    id="Checkbox_On"
+    className="checkbox-svg checkbox-active"
+    data-name="Checkbox On"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <rect id="Bounds" width="24" height="24" fill="none" />
+    <path
+      id="Icon"
+      d="M19,3H5A2.006,2.006,0,0,0,3,5V19a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V5a2.006,2.006,0,0,0-2-2ZM10,17,5,12.2l1.4-1.3L10,14.4,17.6,7,19,8.3,10,17Z"
+      fill="#6565c4"
+    />
+  </svg>
 );
 
 class CheckboxDropdown extends Component {
