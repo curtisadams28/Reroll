@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import CheckboxDropdown from "./checkboxDropdown";
 import TextInput from "./textInput";
-import Dropdown from "./dropdown";
+
 import RadioButtons from "./radioButtons";
 import Slider from "./slider";
 
@@ -174,7 +174,6 @@ class Filters extends Component {
             count++;
           }
         }
-        let exa = genreList.indexOf();
       }
 
       // returns a different query depending on the radio button selected
@@ -203,14 +202,14 @@ class Filters extends Component {
     let from = this.state.releaseYearFrom;
     let to = this.state.releaseYearTo;
 
-    if (from != "" && to != "") {
+    if (from !== "" && to !== "") {
       return `&primary_release_date.gte=${from}-01-01&primary_release_date.lte=${to}-12-31`;
     }
 
-    if (to != "") {
+    if (to !== "") {
       return `&primary_release_date.lte=${to}-12-31`;
     }
-    if (from != "") {
+    if (from !== "") {
       return `&primary_release_date.gte=${from}-01-01`;
     }
     return "";
@@ -218,14 +217,14 @@ class Filters extends Component {
 
   reviewScoreQuery = () => {
     let reviewScore = this.state.reviewScore;
-    if (reviewScore != undefined) {
+    if (reviewScore !== undefined) {
       return `&vote_average.gte=${reviewScore / 10}`;
     }
     return "";
   };
   voteCountQuery = () => {
     let votes = this.state.votes;
-    if (votes != undefined) {
+    if (votes !== undefined) {
       return `&vote_count.gte=${votes}`;
     }
     return "";

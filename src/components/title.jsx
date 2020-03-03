@@ -21,7 +21,7 @@ class Title extends Component {
   // Gets the genre names and combines them into a string seperated by "-"
   createGenre = () => {
     const genreId = this.props.genre;
-    const genreList = this.props.genreList;
+
     let genreString;
     if (genreId === undefined) {
       return;

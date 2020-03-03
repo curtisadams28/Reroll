@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {CSSTransition} from "react-transition-group";
 class Background extends Component {
   constructor(props) {
     super(props);
@@ -15,13 +14,10 @@ class Background extends Component {
     backgroundFadeOut: "background-fade-out",
     backgroundFadeIn: "background-fade-in"
   };
-  componentDidUpdate() {}
-
-  componentDidMount() {}
 
   // static getDerivedStateFromProps(background, state)
   static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.background != state.oldBackground) {
+    if (nextProps.background !== state.oldBackground) {
       //console.log("run animation");
       //console.log(nextProps.background, state.oldBackground);
 
@@ -55,20 +51,22 @@ class Background extends Component {
             className={`background ${this.state.backgroundFadeIn}`}
             onLoad={this.imageLoaded}
             src={this.state.img1}
+            alt=""
           ></img>
 
           <img
             className={`background ${this.state.backgroundFadeOut}`}
             src={this.state.img2}
             ref={this.backgroundObj}
+            alt=""
           ></img>
         </div>
       );
     } else {
       return (
         <div>
-          <img className={`background b1`} src={this.state.img1}></img>
-          <img className="background b2" src={this.state.img2}></img>
+          <img className={`background b1`} src={this.state.img1} alt=""></img>
+          <img className="background b2" src={this.state.img2} alt=""></img>
         </div>
       );
     }

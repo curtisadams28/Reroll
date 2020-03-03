@@ -105,7 +105,7 @@ class TextInput extends Component {
    *
    */
   inputValidation = () => {
-    if (this.state.error != "none") {
+    if (this.state.error !== "none") {
       return <p className="error-message">{this.state.error}</p>;
     }
   };
@@ -130,9 +130,10 @@ class TextInput extends Component {
     }
   };
 }
-
+/*
 TextInput.propTypes = {
   children: PropTypes.element.isRequired
 };
+*/
 
 export default TextInput;

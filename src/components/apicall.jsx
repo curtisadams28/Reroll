@@ -1,20 +1,16 @@
 import React, {Component} from "react";
-import ReactDOM from "react-dom";
 import {CSSTransition} from "react-transition-group";
 
 // Components
 import Title from "./title";
 import Scorebar from "./scorebar";
 import Overview from "./overview";
-import MovieInfo from "./movieinfo";
 import Filters from "./filters";
 import Background from "./background";
 
 // Images
 import dice from "../img/film.svg";
 import filter from "../img/filter.svg";
-import play from "../img/play_button.svg";
-import arrow from "../img/next.svg";
 import close from "../img/close.svg";
 import cancel from "../img/cancel.svg";
 
@@ -165,6 +161,7 @@ class ApiCall extends Component {
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen="allowfullscreen"
           mozallowfullscreen="mozallowfullscreen"
+          title="Movie Trailer"
         ></iframe>
       );
     } else {

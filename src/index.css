@@ -87,7 +87,7 @@ button:focus {
   font-family: "Titillium Web", sans-serif;
   cursor: pointer;
 }
-.nav-buttons:on-hover {
+.nav-buttons:hover {
   cursor: pointer;
 }
 .filters {

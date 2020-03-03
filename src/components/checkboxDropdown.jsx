@@ -1,10 +1,7 @@
 import React, {Component} from "react";
 import {CSSTransition} from "react-transition-group";
 import arrow from "../img/arrow.svg";
-import checkbox1 from "../img/checkboxOff.svg";
-import checkbox2 from "../img/checkboxOn.svg";
 import checkbox3 from "../img/checkboxAllOff.svg";
-import Checkbox from "@material-ui/core/Checkbox";
 
 const checkboxOff = (
   <svg
@@ -83,6 +80,7 @@ class CheckboxDropdown extends Component {
               this.state.dropdownClicked ? "-clicked" : "-not-clicked"
             }`}
             src={arrow}
+            alt=""
           />
           <div
             className={`dropdown-underline dropdown-underline${
