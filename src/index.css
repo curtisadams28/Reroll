@@ -1310,9 +1310,7 @@ input:focus {
   .info-content {
     margin-top: 10vh;
   }
-  .background {
-    display: none;
-  }
+
   .release-year {
     margin-bottom: -3px;
 
