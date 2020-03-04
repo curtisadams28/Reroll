@@ -18,9 +18,6 @@ class Background extends Component {
   // static getDerivedStateFromProps(background, state)
   static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.background !== state.oldBackground) {
-      //console.log("run animation");
-      //console.log(nextProps.background, state.oldBackground);
-
       return {
         img1: nextProps.background,
         img2: state.oldBackground,
@@ -32,19 +29,10 @@ class Background extends Component {
     }
   }
   render() {
-    /*
-    console.log(
-      "old background: " + this.state.oldBackground.background,
-      "new background" + this.props.background
-    );
-    */
-
     return <div>{this.background()}</div>;
   }
   background = () => {
     if (this.state.backgroundChange) {
-      //console.log(this.state.imageLoaded);
-
       return (
         <div>
           <img

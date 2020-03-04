@@ -140,7 +140,6 @@ class CheckboxDropdown extends Component {
         );
         elementArray.push(element);
       }
-      // Returns the
 
       return (
         <CSSTransition

@@ -81,7 +81,6 @@ class TextInput extends Component {
     if (value > currentYear) {
       error = `Year cannot go beyond ${currentYear}`;
     }
-    console.log(error);
     this.setState({
       value: value,
       error: error
@@ -130,10 +129,5 @@ class TextInput extends Component {
     }
   };
 }
-/*
-TextInput.propTypes = {
-  children: PropTypes.element.isRequired
-};
-*/
 
 export default TextInput;

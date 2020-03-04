@@ -196,18 +196,13 @@ class ApiCall extends Component {
         return res.json();
       })
       .then(res => {
-        console.log(res);
-
         return res.total_pages;
       })
       .then(total_pages => {
-        console.log("total pages", total_pages);
-
         if (total_pages === 0) {
           throw "Couldn't find any results";
         }
         let pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
-        console.log(pageQuery);
 
         fetch(
           `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${pageQuery}${query}`

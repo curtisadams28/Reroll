@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import arrow from "../img/arrow.svg";
 import {CSSTransition} from "react-transition-group";
-import cancel from "../img/cancel.svg";
 class Dropdown extends Component {
   state = {
     dropdownClicked: false,
@@ -84,20 +83,6 @@ class Dropdown extends Component {
     this.setState({selectedOption: undefined, optionRemoved: true});
   };
 
-  /*
-  deleteButton = () => {
-    if (data === this.state.selectedOption) {
-      console.log("hello");
-
-      return (
-        <div>
-          
-          <p>hello</p>
-        </div>
-      );
-    }
-  };
-*/
   handleOptions = ev => {
     this.setState({selectedOption: ev.currentTarget.dataset.selected});
   };
@@ -109,16 +94,12 @@ class Dropdown extends Component {
       return "dropdown-selected-on";
     }
     if (clicked === true && selectedOption === undefined) {
-      //console.log("No Selection ON");
       return "dropdown-on";
     } else if (clicked === false && selectedOption === undefined) {
-      //console.log("No Selection OFF");
       return "dropdown-off";
     } else if (clicked === true) {
-      //console.log("Selected ON");
       return "dropdown-selected-on";
     } else if (clicked === false) {
-      // console.log("Selected OFF");
       return "dropdown-selected-off";
     }
   };
