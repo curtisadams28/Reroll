@@ -31,18 +31,6 @@ class MovieInfo extends Component {
   // Searches the results for the US rating and returns it.
   getVotes = () => {
     return this.props.votes;
-    /*
-    const result = this.props.rating.results.filter(
-      lang => lang.iso_3166_1 === "US"
-    );
-
-    const rating = result[0].release_dates[0].certification;
-    if (rating === "") {
-      return "NR";
-    } else {
-      return rating;
-    }
-    */
   };
   // Finds the full language name based on the language code
   getLanguage = () => {

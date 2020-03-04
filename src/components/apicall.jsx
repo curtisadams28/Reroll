@@ -32,11 +32,10 @@ class ApiCall extends Component {
     trailerFound: ""
   };
 
-  componentDidUpdate() {}
-
   componentDidMount() {
     this.suggestMovie("");
 
+    // Gets the available genres from the api for the genre filter
     fetch(
       "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
         process.env.REACT_APP_MOVIE_API_KEY
@@ -146,6 +145,7 @@ class ApiCall extends Component {
     }
   };
 
+  // Checks if the url for the trailer exists and displays error message if it doesn't.
   trailerErrorCheck = () => {
     if (this.state.trailerFound) {
       return (
@@ -187,60 +187,48 @@ class ApiCall extends Component {
       this.setState({backgroundChange: true});
     }
   };
-
   suggestMovie = query => {
-    let queryFull = `https://api.themoviedb.org/3/discover/movie/?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`;
-    //console.log(query);
-
     // This first fetch is to get the number of pages from the api
-    fetch(queryFull)
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`
+    )
       .then(res => {
         return res.json();
       })
       .then(res => {
+        console.log(res);
+
         return res.total_pages;
       })
       .then(total_pages => {
-        //console.log("queryfull", queryFull, total_pages);
-        console.log(total_pages);
+        console.log("total pages", total_pages);
 
         if (total_pages === 0) {
           throw "Couldn't find any results";
         }
         let pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
-        fetch(queryFull + pageQuery)
+        console.log(pageQuery);
+
+        fetch(
+          `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${pageQuery}${query}`
+        )
           // Error checking. See catch at the bottom of the fetch request
           .then(res => {
-            /*
-        if (!res.ok) {
-          throw Error();
-        }
-        */
-
             return res.json();
           })
 
           .then(res => {
-            //console.log("JSON result", res);
-
             const arraySelection = Math.floor(
               Math.random() * res.results.length
             );
-            //console.log("arrayselection", arraySelection);
 
             let movObj = res.results[arraySelection];
-            //console.log("mobObj", movObj);
 
             return movObj;
           })
 
           .then(movObj => {
             // Fetches the trailer url from the movie id (taken from the fetch request above)
-
-            /**
-             * ERROR TO FIX
-             * The key is sometimes undefined meaning there is no trailer. When this is the case, a new movie should be selected.
-             */
             fetch(
               "https://api.themoviedb.org/3/movie/" +
                 movObj.id +
@@ -250,7 +238,6 @@ class ApiCall extends Component {
               .then(res => res.json())
               .then(
                 result => {
-                  console.log(result);
                   let trailerKey;
                   let trailerFound;
                   if (result.results.length === 0) {

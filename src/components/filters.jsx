@@ -21,8 +21,8 @@ class Filters extends Component {
     selectionType: "including",
     releaseYearFrom: "",
     releaseYearTo: "",
-    reviewScore: 60,
-    votes: 2000
+    reviewScore: 50,
+    votes: 1000
   };
   componentDidMount() {}
 
@@ -31,10 +31,6 @@ class Filters extends Component {
   }
 
   render() {
-    //console.log(this.props.screenClicked);
-
-    //console.log(this.props);
-
     // Assigns classes for animations if the filter button has been clicked (menuIsActive)
     let filterClass = "filter-menu";
 
@@ -136,18 +132,6 @@ class Filters extends Component {
     this.setState({[dataName]: value});
   };
 
-  /**
-   * selectedGenres INC = with_genres
-   * selectedGenres EXC = without_genres
-   * selectedGenres EXA = with_genres + without_genres
-   *
-   * release_date.gte & release_date.lte
-   *
-   * vote_average.gte
-   *
-   * vote_count.gte
-   */
-
   genreQuery = () => {
     // Converts the genre names into an id number that can be used in the API query.
     let selectedGenres = this.state.selectedGenres;
@@ -198,6 +182,7 @@ class Filters extends Component {
     return "";
   };
 
+  // The following query functions take the values from the state and make them into strings for the api call.
   releaseYearQuery = () => {
     let from = this.state.releaseYearFrom;
     let to = this.state.releaseYearTo;
@@ -230,6 +215,7 @@ class Filters extends Component {
     return "";
   };
 
+  // Assembles all the query strings into one large string and sends it to the apicall component.
   buildQuery = () => {
     if (this.props.suggestClicked) {
       let genreString = `${this.genreQuery() +
