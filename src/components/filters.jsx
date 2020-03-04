@@ -89,7 +89,7 @@ class Filters extends Component {
         </div>
         <div className="filter-item">
           <Slider
-            sliderName="Number of Votes"
+            sliderName="Number of Reviews"
             objectName="votes"
             sliderMin="0"
             sliderMax="20000"
