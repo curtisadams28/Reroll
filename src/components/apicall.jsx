@@ -29,7 +29,7 @@ class ApiCall extends Component {
     trailerId: "",
     fetchError: false,
     errorMessage: "",
-    trailerFound: ""
+    trailerFound: "",
   };
 
   componentDidMount() {
@@ -40,10 +40,10 @@ class ApiCall extends Component {
       "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
         process.env.REACT_APP_MOVIE_API_KEY
     )
-      .then(res => res.json())
-      .then(result => {
+      .then((res) => res.json())
+      .then((result) => {
         this.setState({
-          movieGenres: result
+          movieGenres: result,
         });
       });
   }
@@ -187,18 +187,18 @@ class ApiCall extends Component {
       this.setState({backgroundChange: true});
     }
   };
-  suggestMovie = query => {
+  suggestMovie = (query) => {
     // This first fetch is to get the number of pages from the api
     fetch(
       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`
     )
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(res => {
+      .then((res) => {
         return res.total_pages;
       })
-      .then(total_pages => {
+      .then((total_pages) => {
         if (total_pages === 0) {
           throw "Couldn't find any results";
         }
@@ -208,11 +208,11 @@ class ApiCall extends Component {
           `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${pageQuery}${query}`
         )
           // Error checking. See catch at the bottom of the fetch request
-          .then(res => {
+          .then((res) => {
             return res.json();
           })
 
-          .then(res => {
+          .then((res) => {
             const arraySelection = Math.floor(
               Math.random() * res.results.length
             );
@@ -222,7 +222,7 @@ class ApiCall extends Component {
             return movObj;
           })
 
-          .then(movObj => {
+          .then((movObj) => {
             // Fetches the trailer url from the movie id (taken from the fetch request above)
             fetch(
               "https://api.themoviedb.org/3/movie/" +
@@ -230,9 +230,9 @@ class ApiCall extends Component {
                 "/videos?api_key=" +
                 process.env.REACT_APP_MOVIE_API_KEY
             )
-              .then(res => res.json())
+              .then((res) => res.json())
               .then(
-                result => {
+                (result) => {
                   let trailerKey;
                   let trailerFound;
                   if (result.results.length === 0) {
@@ -251,23 +251,23 @@ class ApiCall extends Component {
                     isLoaded: true,
                     background:
                       "https://image.tmdb.org/t/p/original" +
-                      movObj.backdrop_path
+                      movObj.backdrop_path,
                   });
                 },
-                error => {
+                (error) => {
                   this.setState({
                     isLoaded: true,
-                    error
+                    error,
                   });
                 }
               );
           });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           fetchError: true,
           errorMessage: err,
-          trailerActive: false
+          trailerActive: false,
         });
       });
   };
@@ -281,11 +281,11 @@ class ApiCall extends Component {
   handleButton = () => {
     if (this.state.menuIsActive === false) {
       this.setState({
-        menuIsActive: true
+        menuIsActive: true,
       });
     } else {
       this.setState({
-        menuIsActive: false
+        menuIsActive: false,
       });
     }
   };
@@ -294,7 +294,7 @@ class ApiCall extends Component {
       return "grid-off";
     }
   };
-  sendQueryString = query => {
+  sendQueryString = (query) => {
     this.suggestMovie(query);
     this.setState({suggestClicked: false});
   };
