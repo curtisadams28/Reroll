@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 class TextInput extends Component {
   constructor(props) {
     super(props);
@@ -14,8 +13,9 @@ class TextInput extends Component {
       <div ref={this.setWrapperRef}>
         {this.props.children}
         <div
-          className={`dropdown-box text-input-container ${"container-" +
-            this.props.containerLocation}`}
+          className={`dropdown-box text-input-container ${
+            "container-" + this.props.containerLocation
+          }`}
         >
           <label className={`dropdown-name ${this.dropdownStateClasses()}`}>
             {this.props.inputName}
@@ -66,7 +66,7 @@ class TextInput extends Component {
   }
 
   // Updates the state when a text input is detected
-  handleChange = event => {
+  handleChange = (event) => {
     const value = event.target.value;
 
     // Simple input validation. The error object is used by inputValidation()
@@ -83,7 +83,7 @@ class TextInput extends Component {
     }
     this.setState({
       value: value,
-      error: error
+      error: error,
     });
   };
   dropdownClick = () => {

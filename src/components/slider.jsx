@@ -1,7 +1,14 @@
 import React, {Component} from "react";
 class Slider extends Component {
+  /*
   componentWillMount() {
     this.setState({value: this.props.defaultValue});
+  }
+  */
+
+  constructor(props) {
+    super(props);
+    this.state = {value: props.defaultValue};
   }
   render() {
     return (
@@ -43,10 +50,10 @@ class Slider extends Component {
     }
   };
 
-  handleSliderChange = e => {
+  handleSliderChange = (e) => {
     this.setState({value: e.target.value});
   };
-  handleTextChange = e => {
+  handleTextChange = (e) => {
     let value = e.target.value;
     if (value === "") {
       value = 1;

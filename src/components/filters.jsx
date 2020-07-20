@@ -22,9 +22,8 @@ class Filters extends Component {
     releaseYearFrom: "",
     releaseYearTo: "",
     reviewScore: 50,
-    votes: 1000
+    votes: 1000,
   };
-  componentDidMount() {}
 
   componentDidUpdate() {
     this.buildQuery();
@@ -109,7 +108,7 @@ class Filters extends Component {
    * It is passed to the dropdown and text input child components where it will be run upon opening a
    * dropdown/text input.
    */
-  addDocumentListener = inputElement => {
+  addDocumentListener = (inputElement) => {
     document.addEventListener("mousedown", this.handleClickContainer);
 
     this.setState({screenClicked: false, currentInputElement: inputElement});
@@ -120,12 +119,15 @@ class Filters extends Component {
    * handClickContain is run when an area outside of the input component is clicked. It runs outsideClick()
    * which is a function in each of the components that tells the state that it is no longer active. This
    * triggers the closing animations for the component.
+   *
+   * Eval function. Removed function constructor but am unsure of full effects so old code leaving here.
+   * new Function(this[inputElement].current.outsideClick());
    */
 
-  handleClickContainer = e => {
+  handleClickContainer = (e) => {
     document.removeEventListener("mousedown", this.handleClickContainer);
     let inputElement = this.state.currentInputElement;
-    new Function(this[inputElement].current.outsideClick());
+    this[inputElement].current.outsideClick();
     this.setState({screenClicked: true});
   };
   addQuery = (dataName, value) => {
@@ -218,10 +220,12 @@ class Filters extends Component {
   // Assembles all the query strings into one large string and sends it to the apicall component.
   buildQuery = () => {
     if (this.props.suggestClicked) {
-      let genreString = `${this.genreQuery() +
+      let genreString = `${
+        this.genreQuery() +
         this.reviewScoreQuery() +
         this.voteCountQuery() +
-        this.releaseYearQuery()}`;
+        this.releaseYearQuery()
+      }`;
       this.props.sendQueryString(genreString);
     }
   };

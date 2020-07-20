@@ -200,7 +200,7 @@ class ApiCall extends Component {
       })
       .then((total_pages) => {
         if (total_pages === 0) {
-          throw "Couldn't find any results";
+          throw new Error("Couldn't find any results");
         }
         let pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
 
@@ -264,9 +264,11 @@ class ApiCall extends Component {
           });
       })
       .catch((err) => {
+        //console.log(err);
+
         this.setState({
           fetchError: true,
-          errorMessage: err,
+          errorMessage: err.toString().substring(7),
           trailerActive: false,
         });
       });

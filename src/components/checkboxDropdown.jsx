@@ -55,14 +55,12 @@ class CheckboxDropdown extends Component {
     dropdownClicked: false,
     genresSelected: [],
     selectAll: false,
-    allRemoved: false
+    allRemoved: false,
   };
   render() {
     let dropdownBox = "dropdown-box";
-    let dropdownName = "dropdown-name";
     if (this.state.dropdownClicked) {
       dropdownBox += " dropdown-box-clicked";
-      dropdownName += " dropdown-name-clicked";
     }
 
     return (
@@ -94,7 +92,7 @@ class CheckboxDropdown extends Component {
     );
   }
 
-  handleClick = e => {
+  handleClick = (e) => {
     if (this.state.dropdownClicked) {
       this.setState({dropdownClicked: false});
     } else {
@@ -128,7 +126,7 @@ class CheckboxDropdown extends Component {
   createOptions = () => {
     // Checks to see if the genres from the api call are available yet
     if (this.props.genres.genres !== undefined) {
-      let genresList = this.props.genres.genres.map(genre => genre.name);
+      let genresList = this.props.genres.genres.map((genre) => genre.name);
       let elementArray = [];
 
       // Iterates through the list of genres and builds an array of html elements
@@ -166,7 +164,7 @@ class CheckboxDropdown extends Component {
   };
 
   selectAll = () => {
-    let genresList = this.props.genres.genres.map(genre => genre.name);
+    let genresList = this.props.genres.genres.map((genre) => genre.name);
 
     if (this.state.genresSelected.length > 0) {
       // sets state in parent component.
@@ -242,16 +240,16 @@ class CheckboxDropdown extends Component {
     }
   };
 
-  addGenre = ev => {
+  addGenre = (ev) => {
     const genres = this.state.genresSelected;
     genres.push(ev.currentTarget.dataset.genre);
     this.props.addQuery("selectedGenres", genres);
     this.setState({genresSelected: genres, allRemoved: false});
   };
-  removeGenre = ev => {
+  removeGenre = (ev) => {
     const genreCurrent = ev.currentTarget.dataset.genre;
     const genresSelected = this.state.genresSelected.filter(
-      genre => genre !== genreCurrent
+      (genre) => genre !== genreCurrent
     );
     this.props.addQuery("selectedGenres", genresSelected);
 
