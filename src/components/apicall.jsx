@@ -190,6 +190,7 @@ class ApiCall extends Component {
   suggestMovie = (query) => {
     // This first fetch is to get the number of pages from the api
     fetch(
+      
       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${query}`
     )
       .then((res) => {
@@ -198,16 +199,25 @@ class ApiCall extends Component {
       .then((res) => {
         return res.total_pages;
       })
+
+      // Chooses a random page from the total number of pages.
       .then((total_pages) => {
+        let pageQuery;
         if (total_pages === 0) {
           throw new Error("Couldn't find any results");
         }
-        let pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
-
+        if (total_pages > 500) {
+          pageQuery = `&page=${Math.ceil(Math.random() * 500)}`;
+        }
+        if (total_pages <= 500) {
+          pageQuery = `&page=${Math.ceil(Math.random() * total_pages)}`;
+        }
+        
+        // Fetches a movie from a random page of the api. 
         fetch(
           `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&include_adult=false${pageQuery}${query}`
         )
-          // Error checking. See catch at the bottom of the fetch request
+          // Error checking. See catch at the bottom of the fetch request.
           .then((res) => {
             return res.json();
           })
@@ -218,7 +228,6 @@ class ApiCall extends Component {
             );
 
             let movObj = res.results[arraySelection];
-
             return movObj;
           })
 
@@ -264,8 +273,6 @@ class ApiCall extends Component {
           });
       })
       .catch((err) => {
-        //console.log(err);
-
         this.setState({
           fetchError: true,
           errorMessage: err.toString().substring(7),
